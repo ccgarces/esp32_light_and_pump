@@ -1,0 +1,11 @@
+This repo is for esp32 project to control a grow light intensity from off to full bright using pwm channel and another pwm channel to control air pump pressure from none to full. 
+use esf idf framework for the source code, do not use arduino or a super loop method.
+Use platformIO for development.
+It also has i2c to read aht10 temperature and humidity sensor. 
+The esp32 will be commissioned using a flutter mobile app using ble to supply data like wifi ssid, password, and device name. 
+when the device is connected to WIFI, it will update its local time with the internet time base on the location provided by the app.
+Software update will be done via OTA. The pwm channels can be controlled via wifi using the flutter app. 
+Temp and humidity sensor data will be measured every hour and data will be stored in esp32c3 storage.
+Mobile app will sync its Temp and humidity data with the esp32c3 storage in an hourly basis if it has connectivity by pinging the esp32 device before initiating the data sync.
+The lights and pump will be scheduled to turn-on and off based on the times provide by the user via the app. but it has a default on at 7AM and off at 9PM.
+write a readme.md file that documents the functionality of this firmware, write the unit testing steps and instruction on how to compile and deploy.
