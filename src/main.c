@@ -31,6 +31,8 @@
 #include "storage.h"
 #include "scheduler.h"
 #include "ota_manager.h"
+#include "http_server.h"
+#include "ble_prov.h"
 
 static const char *TAG = "main";
 
@@ -88,6 +90,8 @@ void app_main(void)
         ESP_LOGI(TAG, "Connected to WiFi, init SNTP and MQTT");
         sntp_init_and_wait();
         mqtt_manager_init();
+    /* start HTTP server so mobile app can fetch readings */
+    http_server_init();
     } else {
         ESP_LOGW(TAG, "WiFi not connected - MQTT and SNTP will be delayed until connection");
     }
@@ -97,6 +101,9 @@ void app_main(void)
 
     ESP_LOGI(TAG, "Initializing OTA manager");
     ota_manager_init();
+
+    /* Initialize BLE provisioning (stub) so README callers know it's available */
+    ble_prov_init();
 
     /* Sensor task: read AHT10 hourly and store */
     xTaskCreatePinnedToCore(aht10_hourly_task, "aht10_task", 4 * 1024, NULL, 5, NULL, tskNO_AFFINITY);

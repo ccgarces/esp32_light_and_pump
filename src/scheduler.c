@@ -5,7 +5,6 @@
 #include "freertos/task.h"
 #include <time.h>
 
-static const char *TAG = "scheduler";
 static int on_hour = 7;
 static int on_min = 0;
 static int off_hour = 21;

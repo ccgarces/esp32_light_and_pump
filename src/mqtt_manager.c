@@ -4,6 +4,8 @@
 #include "mqtt_client.h"
 #include "pwm_ctrl.h"
 #include "storage.h"
+#include "wifi_manager.h"
+#include "ota_manager.h"
 
 static const char *TAG = "mqtt_manager";
 static esp_mqtt_client_handle_t client = NULL;
@@ -32,10 +34,20 @@ static esp_err_t mqtt_event_handler_cb(esp_mqtt_event_handle_t event)
                 if (sep) {
                     *sep = '\0';
                     storage_set_wifi_credentials(buf, sep + 1);
+                    // connect immediately
+                    wifi_manager_connect(buf, sep + 1);
                 }
             } else if (strncmp(event->topic, "device/cmd/ota", event->topic_len) == 0) {
-                // payload could be URL - for now trigger internal OTA manager to check broker
-                ota_manager_request_update();
+                // payload format: url[;sha256hex]
+                char buf[512];
+                snprintf(buf, sizeof(buf), "%.*s", event->data_len, event->data);
+                char *sep = strchr(buf, ';');
+                if (sep) {
+                    *sep = '\0';
+                    ota_manager_request_update(buf, sep + 1);
+                } else {
+                    ota_manager_request_update(buf, NULL);
+                }
             }
             break;
         default:
@@ -44,13 +56,20 @@ static esp_err_t mqtt_event_handler_cb(esp_mqtt_event_handle_t event)
     return ESP_OK;
 }
 
+// Wrapper to adapt esp_event_handler_t signature to mqtt event handler
+static void mqtt_event_handler(void* handler_args, esp_event_base_t base, int32_t event_id, void* event_data)
+{
+    mqtt_event_handler_cb((esp_mqtt_event_handle_t)event_data);
+}
+
 void mqtt_manager_init(void)
 {
     esp_mqtt_client_config_t cfg = {0};
     /* Use broker.address.uri which some esp-idf versions expect */
     cfg.broker.address.uri = "mqtt://broker.hivemq.com:1883";
     client = esp_mqtt_client_init(&cfg);
-    esp_mqtt_client_register_event(client, ESP_EVENT_ANY_ID, (esp_event_handler_t)mqtt_event_handler_cb, NULL);
+    /* register the wrapper with the proper signature */
+    esp_mqtt_client_register_event(client, ESP_EVENT_ANY_ID, mqtt_event_handler, NULL);
     esp_mqtt_client_start(client);
 }
 

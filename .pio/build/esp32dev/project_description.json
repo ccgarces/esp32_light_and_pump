@@ -1,7 +1,7 @@
 {
     "version":            "1.2",
     "project_name":       "esp32_light_and_pump",
-    "project_version":    "10b3124-dirty",
+    "project_version":    "47ed35c-dirty",
     "project_path":       "D:/github/esp32_light_and_pump",
     "idf_path":           "C:/Users/ccgar/.platformio/packages/framework-espidf",
     "build_dir":          "D:/github/esp32_light_and_pump/.pio/build/esp32dev",
@@ -1480,7 +1480,7 @@
             "managed_reqs": [],
             "managed_priv_reqs": [],
             "file": "D:/github/esp32_light_and_pump/.pio/build/esp32dev/esp-idf/src/libsrc.a",
-            "sources": [ "D:/github/esp32_light_and_pump/src/CMakeLists.txt", "D:/github/esp32_light_and_pump/src/aht10.c", "D:/github/esp32_light_and_pump/src/aht10.h", "D:/github/esp32_light_and_pump/src/main.c", "D:/github/esp32_light_and_pump/src/mqtt_manager.c", "D:/github/esp32_light_and_pump/src/mqtt_manager.h", "D:/github/esp32_light_and_pump/src/ota_manager.c", "D:/github/esp32_light_and_pump/src/ota_manager.h", "D:/github/esp32_light_and_pump/src/pwm_ctrl.c", "D:/github/esp32_light_and_pump/src/pwm_ctrl.h", "D:/github/esp32_light_and_pump/src/scheduler.c", "D:/github/esp32_light_and_pump/src/scheduler.h", "D:/github/esp32_light_and_pump/src/storage.c", "D:/github/esp32_light_and_pump/src/storage.h", "D:/github/esp32_light_and_pump/src/wifi_manager.c", "D:/github/esp32_light_and_pump/src/wifi_manager.h" ],
+            "sources": [ "D:/github/esp32_light_and_pump/src/CMakeLists.txt", "D:/github/esp32_light_and_pump/src/aht10.c", "D:/github/esp32_light_and_pump/src/aht10.h", "D:/github/esp32_light_and_pump/src/ble_prov.c", "D:/github/esp32_light_and_pump/src/ble_prov.h", "D:/github/esp32_light_and_pump/src/http_server.c", "D:/github/esp32_light_and_pump/src/http_server.h", "D:/github/esp32_light_and_pump/src/main.c", "D:/github/esp32_light_and_pump/src/mqtt_manager.c", "D:/github/esp32_light_and_pump/src/mqtt_manager.h", "D:/github/esp32_light_and_pump/src/ota_manager.c", "D:/github/esp32_light_and_pump/src/ota_manager.c.bak", "D:/github/esp32_light_and_pump/src/ota_manager.h", "D:/github/esp32_light_and_pump/src/pwm_ctrl.c", "D:/github/esp32_light_and_pump/src/pwm_ctrl.h", "D:/github/esp32_light_and_pump/src/scheduler.c", "D:/github/esp32_light_and_pump/src/scheduler.h", "D:/github/esp32_light_and_pump/src/storage.c", "D:/github/esp32_light_and_pump/src/storage.h", "D:/github/esp32_light_and_pump/src/wifi_manager.c", "D:/github/esp32_light_and_pump/src/wifi_manager.h" ],
             "include_dirs": []
         },
         "tcp_transport": {

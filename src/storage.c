@@ -4,6 +4,8 @@
 #include "nvs_flash.h"
 #include <string.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 static const char *TAG = "storage";
 
@@ -62,4 +64,50 @@ bool storage_log_sensor_reading(int64_t timestamp, float temperature, float humi
     }
     nvs_close(handle);
     return res == ESP_OK;
+}
+
+int storage_export_readings_json(char *buf, size_t buflen)
+{
+    nvs_handle_t handle;
+    if (nvs_open("sensors", NVS_READONLY, &handle) != ESP_OK) return -1;
+    uint32_t idx = 0;
+    nvs_get_u32(handle, "idx", &idx);
+
+    size_t pos = 0;
+    int written = snprintf(buf + pos, buflen - pos, "[");
+    if (written < 0) { nvs_close(handle); return -1; }
+    pos += written;
+
+    for (uint32_t i = 0; i < idx; ++i) {
+        char key[32];
+        snprintf(key, sizeof(key), "r%lu", (unsigned long)i);
+        size_t needed = 0;
+        if (nvs_get_str(handle, key, NULL, &needed) != ESP_OK) continue;
+        char *val = malloc(needed);
+        if (!val) continue;
+        if (nvs_get_str(handle, key, val, &needed) == ESP_OK) {
+            // val is "timestamp,temp,hum"
+            // We'll output as JSON object
+            long long ts = 0; float t=0,h=0;
+            sscanf(val, "%lld,%f,%f", &ts, &t, &h);
+            // add comma separator for subsequent items
+            if (i > 0) {
+                if (pos + 1 < buflen) { buf[pos++] = ','; } else { free(val); break; }
+            }
+            written = snprintf(buf + pos, buflen - pos, "{\"ts\":%lld,\"t\":%.2f,\"h\":%.2f}", ts, t, h);
+            if (written < 0 || (size_t)written >= buflen - pos) { free(val); break; }
+            pos += written;
+        }
+        free(val);
+    }
+
+    if (pos + 2 < buflen) {
+        buf[pos++] = ']';
+        buf[pos] = '\0';
+    } else if (buflen > 0) {
+        buf[buflen-1] = '\0';
+    }
+
+    nvs_close(handle);
+    return (int)pos;
 }

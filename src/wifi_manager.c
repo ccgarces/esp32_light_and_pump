@@ -56,6 +56,12 @@ void wifi_manager_init(void)
     }
 }
 
+void wifi_manager_connect(const char *ssid, const char *pass)
+{
+    ESP_LOGI(TAG, "wifi_manager_connect called for SSID=%s", ssid);
+    wifi_init_sta(ssid, pass);
+}
+
 static void wifi_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data)
 {
     if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START) {
