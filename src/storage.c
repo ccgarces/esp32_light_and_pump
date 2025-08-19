@@ -3,6 +3,7 @@
 #include "nvs.h"
 #include "nvs_flash.h"
 #include <string.h>
+#include <stdint.h>
 
 static const char *TAG = "storage";
 
@@ -50,7 +51,7 @@ bool storage_log_sensor_reading(int64_t timestamp, float temperature, float humi
     uint32_t idx = 0;
     nvs_get_u32(handle, "idx", &idx);
     char key[32];
-    snprintf(key, sizeof(key), "r%u", idx);
+    snprintf(key, sizeof(key), "r%lu", (unsigned long)idx);
     char val[64];
     snprintf(val, sizeof(val), "%lld,%.2f,%.2f", timestamp, temperature, humidity);
     esp_err_t res = nvs_set_str(handle, key, val);
@@ -62,5 +63,3 @@ bool storage_log_sensor_reading(int64_t timestamp, float temperature, float humi
     nvs_close(handle);
     return res == ESP_OK;
 }
-
-*** End Patch

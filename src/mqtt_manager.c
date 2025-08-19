@@ -46,9 +46,9 @@ static esp_err_t mqtt_event_handler_cb(esp_mqtt_event_handle_t event)
 
 void mqtt_manager_init(void)
 {
-    esp_mqtt_client_config_t cfg = {
-        .uri = "mqtt://broker.hivemq.com:1883",
-    };
+    esp_mqtt_client_config_t cfg = {0};
+    /* Use broker.address.uri which some esp-idf versions expect */
+    cfg.broker.address.uri = "mqtt://broker.hivemq.com:1883";
     client = esp_mqtt_client_init(&cfg);
     esp_mqtt_client_register_event(client, ESP_EVENT_ANY_ID, (esp_event_handler_t)mqtt_event_handler_cb, NULL);
     esp_mqtt_client_start(client);
@@ -61,5 +61,3 @@ void mqtt_publish_sensor(int64_t timestamp, float temperature, float humidity)
     snprintf(payload, sizeof(payload), "{\"ts\":%lld,\"t\":%.2f,\"h\":%.2f}", timestamp, temperature, humidity);
     esp_mqtt_client_publish(client, "device/sensor", payload, 0, 1, 0);
 }
-
-*** End Patch

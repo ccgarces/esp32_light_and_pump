@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdbool.h>
+#include <stdint.h>
 
 void aht10_init(void);
 bool aht10_read(float *temperature, float *humidity);

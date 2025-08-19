@@ -28,6 +28,16 @@ platformio run --environment esp32dev
 platformio run --target upload --environment esp32dev
 ```
 
+## PowerShell PATH tip
+
+If you need to use the PlatformIO CLI from PowerShell and you installed PlatformIO using the VS Code extension (which places the CLI into a per-user virtualenv), you can add the `penv\Scripts` folder to your current session PATH with this command:
+
+```powershell
+$env:Path += ";$env:USERPROFILE\.platformio\penv\Scripts"
+```
+
+After running that line you can run `platformio` directly in the same PowerShell session (for example: `platformio run --environment esp32dev`).
+
 Unit testing / verification steps
 
 1. Verify I2C and AHT10

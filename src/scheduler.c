@@ -44,8 +44,6 @@ void scheduler_task(void *arg)
             pwm_set_light_duty(0);
             pwm_set_pump_duty(0);
         }
-    vTaskDelay(pdMS_TO_TICKS(60 * 1000)); // check every minute
+        vTaskDelay(pdMS_TO_TICKS(60 * 1000)); // check every minute
     }
 }
-
-*** End Patch
