@@ -1,0 +1,19 @@
+menu "BLE component configuration"
+
+config BLE_DEVICE_NAME
+    string "BLE device name"
+    default "esp_grow_controller"
+
+config BLE_PROV_SERVICE_UUID
+    string "Provisioning service UUID"
+    default "12345678-1234-5678-1234-56789abcdef0"
+
+endmenu
+
+menu "BLE testing"
+
+config BLE_TESTING
+    bool "Enable BLE testing hooks"
+    default n
+
+endmenu

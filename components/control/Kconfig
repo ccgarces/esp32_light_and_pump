@@ -1,0 +1,23 @@
+menu "Control component configuration"
+
+config CONTROL_LIGHT_GPIO
+    int "LED PWM GPIO (Light)"
+    default 18
+
+config CONTROL_PUMP_GPIO
+    int "LED PWM GPIO (Pump)"
+    default 19
+
+config CONTROL_LEDC_TIMER
+    int "LEDC timer (0..3)"
+    default 0
+
+config CONTROL_LEDC_FREQ
+    int "LEDC frequency (Hz)"
+    default 5000
+
+config CONTROL_DEFAULT_RAMP_MS
+    int "Default soft-ramp (ms)"
+    default 1000
+
+endmenu

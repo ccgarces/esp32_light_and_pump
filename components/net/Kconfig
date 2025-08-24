@@ -1,0 +1,29 @@
+menu "Network component configuration"
+
+config NET_SSID_MAX_LEN
+    int "Max SSID length"
+    default 32
+
+config NET_PSK_MAX_LEN
+    int "Max PSK length"
+    default 64
+
+config NET_WIFI_MAX_RETRY
+    int "Max Wi-Fi reconnect retries"
+    default 10
+    help
+        Number of consecutive reconnect attempts before declaring failure.
+
+config NET_BLE_FALLBACK_SEC
+    int "BLE fallback activation threshold (seconds without Wi-Fi)"
+    default 60
+    help
+        If Wi-Fi is down for this many seconds, enable BLE provisioning.
+
+config NET_WIFI_STABLE_MIN
+    int "Disable BLE after Wi-Fi stable for (minutes)"
+    default 5
+    help
+        After Wi-Fi has been up for this many minutes, disable BLE to reduce attack surface.
+
+endmenu

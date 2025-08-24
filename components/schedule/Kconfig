@@ -1,0 +1,18 @@
+menu "Schedule component configuration"
+
+config SCHEDULE_DEFAULT_ON_HOUR
+    int "Default ON hour (local time)"
+    default 7
+
+config SCHEDULE_DEFAULT_OFF_HOUR
+    int "Default OFF hour (local time)"
+    default 21
+
+config SCHEDULE_DEFAULT_TZ
+    string "Default IANA Timezone"
+    default "UTC"
+    help
+        Default timezone to use until one is provisioned.
+        See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+
+endmenu

@@ -1,0 +1,23 @@
+menu "AWS MQTT configuration"
+
+config AWS_IOT_ENDPOINT
+    string "AWS IoT Core endpoint"
+    default "example-ats.iot.region.amazonaws.com"
+
+config AWS_CLIENT_ID
+    string "MQTT client id"
+    default "esp_grow_controller"
+
+config AWS_ROOT_CA_PATH
+    string "Root CA path or partition label"
+    default "" 
+
+config AWS_DEVICE_CERT_PATH
+    string "Device cert path or partition label"
+    default "" 
+
+config AWS_DEVICE_KEY_PATH
+    string "Device private key path or partition label"
+    default "" 
+
+endmenu

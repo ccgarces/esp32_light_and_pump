@@ -1,0 +1,14 @@
+menu "Safety component configuration"
+
+config SAFETY_WDT_TIMEOUT_S
+    int "Task watchdog timeout (seconds)"
+    default 5
+
+config SAFETY_TASK_INTERVAL_MS
+    int "Safety task check interval (ms)"
+    default 1000
+    help
+        How often the high-priority safety task runs its monitoring checks.
+        This must be less than the WDT timeout.
+
+endmenu

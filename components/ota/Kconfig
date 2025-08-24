@@ -1,0 +1,7 @@
+menu "OTA component configuration"
+
+config OTA_MAX_RETRIES
+    int "Max OTA retries before rollback"
+    default 3
+
+endmenu

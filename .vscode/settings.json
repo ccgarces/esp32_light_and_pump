@@ -1,5 +1,9 @@
 {
     "idf.espIdfPathWin": "C:/Espressif/frameworks/esp-idf-v5.3.2/",
     "idf.toolsPathWin": "C:\\Espressif",
-    "idf.pythonInstallPath": "C:\\Espressif\\tools\\idf-python\\3.11.2\\python.exe"
+    "idf.pythonInstallPath": "C:\\Espressif\\tools\\idf-python\\3.11.2\\python.exe",
+    "idf.openOcdConfigs": [
+        "board/esp32c3-builtin.cfg"
+    ],
+    "idf.portWin": "COM8"
 }

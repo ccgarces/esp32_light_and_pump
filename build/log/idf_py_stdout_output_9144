@@ -1,0 +1,6 @@
+Command: C:\Espressif\python_env\idf5.5_py3.12_env\Scripts\python.exe C:\Espressif\frameworks\v5.5\esp-idf\tools/idf_monitor.py -p COM8 -b 115200 --toolchain-prefix riscv32-esp-elf- --target esp32c3 --revision 3 --decode-panic backtrace D:\github\esp32_light_and_pump\build\esp32_light_and_pump.elf D:\github\esp32_light_and_pump\build\bootloader\bootloader.elf --no-reset --force-color -m 'C:\Espressif\python_env\idf5.5_py3.12_env\Scripts\python.exe' 'C:\Espressif\frameworks\v5.5\esp-idf\tools\idf.py' '-p' 'COM8'
+[1;31mE (347) task_wdt: esp_task_wdt_init(517): TWDT already initialized[0m
+[0;33mW (347) safety: Task WDT already initialized; using existing config[0m
+[0;32mI (347) safety: safety_task starting[0m
+[0;32mI (347) safety: Safety component initialized (WDT timeout: 5s)[0m
+[0;32mI (347) storage: Storage initialized (namespace: app_config)[0m

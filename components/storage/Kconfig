@@ -1,0 +1,11 @@
+menu "Storage component configuration"
+
+config STORAGE_NAMESPACE
+    string "NVS namespace for configs"
+    default "app_config"
+
+config STORAGE_MAX_BLOB
+    int "Maximum config blob size (bytes)"
+    default 1024
+
+endmenu

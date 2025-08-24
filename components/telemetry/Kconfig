@@ -1,0 +1,21 @@
+menu "Telemetry component configuration"
+
+    config TELEMETRY_HEARTBEAT_INTERVAL_S
+        int "Heartbeat interval (seconds)"
+        default 300
+        help
+            The interval at which the device sends a heartbeat message.
+
+    config TELEMETRY_HEARTBEAT_TOPIC
+        string "MQTT topic for heartbeats"
+        default "device/heartbeat"
+        help
+            The MQTT topic to which heartbeat messages are published.
+
+    config TELEMETRY_AUDIT_TOPIC
+        string "MQTT topic for audit logs"
+        default "device/audit"
+        help
+            The MQTT topic to which audit log messages are published.
+
+endmenu
