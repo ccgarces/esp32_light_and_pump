@@ -1,0 +1,157 @@
+Command: C:\Espressif\python_env\idf5.5_py3.12_env\Scripts\python.exe C:\Espressif\frameworks\v5.5\esp-idf\tools/idf_monitor.py -p COM8 -b 115200 --toolchain-prefix riscv32-esp-elf- --target esp32c3 --revision 3 --decode-panic backtrace D:\github\esp32_light_and_pump\build\esp32_light_and_pump.elf D:\github\esp32_light_and_pump\build\bootloader\bootloader.elf --force-color -m 'C:\Espressif\python_env\idf5.5_py3.12_env\Scripts\python.exe' 'C:\Espressif\frameworks\v5.5\esp-idf\tools\idf.py' '-p' 'COM8'
+ESP-ROM:esp32c3-api1-20210207
+Build:Feb  7 2021
+rst:0x15 (USB_UART_CHIP_RESET),boot:0xd (SPI_FAST_FLASH_BOOT)
+Saved PC:0x403895d2
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fcd5830,len:0x15c0
+load:0x403cbf10,len:0xba4
+load:0x403ce710,len:0x3040
+entry 0x403cbf1a
+[0;32mI (24) boot: ESP-IDF v5.5 2nd stage bootloader[0m
+[0;32mI (24) boot: compile time Aug 26 2025 18:54:43[0m
+[0;32mI (24) boot: chip revision: v0.4[0m
+[0;32mI (25) boot: efuse block revision: v1.3[0m
+[0;32mI (25) boot.esp32c3: SPI Speed      : 80MHz[0m
+[0;32mI (25) boot.esp32c3: SPI Mode       : DIO[0m
+[0;32mI (25) boot.esp32c3: SPI Flash Size : 4MB[0m
+[0;32mI (25) boot: Enabling RNG early entropy source...[0m
+[0;32mI (25) boot: Partition Table:[0m
+[0;32mI (26) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (26) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (26) boot:  1 nvs_keys         NVS keys         01 04 0000f000 00001000[0m
+[0;32mI (26) boot:  2 phy_init         RF data          01 01 00011000 00001000[0m
+[0;32mI (27) boot:  3 otadata          OTA data         01 00 00012000 00002000[0m
+[0;32mI (27) boot:  4 ota_0            OTA app          00 10 00020000 00180000[0m
+[0;32mI (27) boot:  5 ota_1            OTA app          00 11 001a0000 00180000[0m
+[0;32mI (28) boot:  6 esp_secure_cert  Unknown data     01 19 00320000 00004000[0m
+[0;32mI (28) boot:  7 storage          Unknown data     01 81 00324000 0002c000[0m
+[0;32mI (28) boot: End of partition table[0m
+[0;32mI (28) esp_image: segment 0: paddr=00020020 vaddr=3c100020 size=2a10ch (172300) map[0m
+[0;32mI (56) esp_image: segment 1: paddr=0004a134 vaddr=3fc99a00 size=032e4h ( 13028) load[0m
+[0;32mI (59) esp_image: segment 2: paddr=0004d420 vaddr=40380000 size=02bf8h ( 11256) load[0m
+[0;32mI (61) esp_image: segment 3: paddr=00050020 vaddr=42000020 size=f2794h (993172) map[0m
+[0;32mI (220) esp_image: segment 4: paddr=001427bc vaddr=40382bf8 size=16cf4h ( 93428) load[0m
+[0;32mI (238) esp_image: segment 5: paddr=001594b8 vaddr=50000000 size=00020h (    32) load[0m
+[0;32mI (246) boot: Loaded app from partition at offset 0x20000[0m
+[0;32mI (246) boot: Disabling RNG early entropy source...[0m
+[0;32mI (246) cpu_start: Unicore app[0m
+[0;32mI (255) cpu_start: Pro cpu start user code[0m
+[0;32mI (255) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (255) app_init: Application information:[0m
+[0;32mI (255) app_init: Project name:     esp32_light_and_pump[0m
+[0;32mI (255) app_init: App version:      2d2b5d8-dirty[0m
+[0;32mI (255) app_init: Compile time:     Aug 26 2025 18:53:45[0m
+[0;32mI (256) app_init: ELF file SHA256:  f1099f1ef...[0m
+[0;32mI (256) app_init: ESP-IDF:          v5.5[0m
+[0;32mI (256) efuse_init: Min chip rev:     v0.3[0m
+[0;32mI (256) efuse_init: Max chip rev:     v1.99 [0m
+[0;32mI (256) efuse_init: Chip rev:         v0.4[0m
+[0;32mI (256) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (256) heap_init: At 3FCA2DA0 len 0001D260 (116 KiB): RAM[0m
+[0;32mI (257) heap_init: At 3FCC0000 len 0001C710 (113 KiB): Retention RAM[0m
+[0;32mI (257) heap_init: At 3FCDC710 len 00002950 (10 KiB): Retention RAM[0m
+[0;32mI (257) heap_init: At 50000020 len 00001FC8 (7 KiB): RTCRAM[0m
+[0;32mI (258) spi_flash: detected chip: generic[0m
+[0;32mI (258) spi_flash: flash io: dio[0m
+[0;32mI (259) sleep_gpio: Configure to isolate all GPIO pins in sleep state[0m
+[0;32mI (259) sleep_gpio: Enable automatic switching of GPIO sleep configuration[0m
+[0;32mI (259) coexist: coex firmware version: 831ec70[0m
+[0;32mI (260) coexist: coexist rom version 9387209[0m
+[0;32mI (260) main_task: Started on CPU0[0m
+[0;32mI (260) main_task: Calling app_main()[0m
+[0;32mI (260) APP: === USB console hello ===[0m
+[0;32mI (260) app_main: starting app_main[0m
+[0;32mI (260) app_main: Device MAC (STA) 0C:4E:A0:30:88:34[0m
+[0;32mI (260) safety: Task WDT enabled by Kconfig (timeout=5s); skipping init[0m
+[0;32mI (260) safety: safety_task starting[0m
+[0;32mI (260) safety: Safety component initialized (WDT timeout: 5s)[0m
+[0;32mI (260) storage: Storage initialized (namespace: app_config)[0m
+[0;32mI (260) control: apply_duty: light=0% pump=0% ramp=0ms[0m
+[0;32mI (260) control: control_task starting[0m
+[0;32mI (260) control: control initialized[0m
+[0;32mI (260) schedule: Loaded schedule: ON 07:00, OFF 21:00, TZ=UTC[0m
+[0;32mI (270) schedule: schedule_task starting[0m
+[0;32mI (270) schedule: Waiting for time sync...[0m
+[0;32mI (270) schedule: schedule initialized[0m
+[0;32mI (270) schedule: Loaded schedule: ON 07:00, OFF 21:00, TZ=UTC[0m
+[0;32mI (270) app_main: applied stored TZ=UTC[0m
+[0;32mI (270) app_main: schedule: ON 07:00 OFF 21:00 TZ=UTC[0m
+[0;32mI (270) ble_nimble: init NimBLE[0m
+[0;32mI (270) ble_nimble: heap free: 8bit=224472, 32bit=224472[0m
+[0;32mI (270) BLE_INIT: BT controller compile version [4713a69][0m
+[0;32mI (270) BLE_INIT: Feature Config, ADV:1, BLE_50:1, DTM:1, SCAN:1, CCA:0, SMP:1, CONNECT:1[0m
+[0;32mI (270) BLE_INIT: Bluetooth MAC: 0c:4e:a0:30:88:36[0m
+[0;32mI (270) phy_init: phy_version 1201,bae5dd99,Mar  3 2025,15:36:21[0m
+[0;32mI (310) NimBLE: GAP procedure initiated: stop advertising.[0m
+
+[0;32mI (310) NimBLE: Failed to restore IRKs from store; status=8[0m
+
+[0;32mI (310) ble_nimble: BLE addr 0C:4E:A0:30:88:36[0m
+[0;32mI (310) ble_nimble: GATT services registered[0m
+[0;32mI (310) pp: pp rom version: 9387209[0m
+[0;32mI (310) net80211: net80211 rom version: 9387209[0m
+[0;32mI (320) wifi:wifi driver task: 3fcbeffc, prio:23, stack:6656, core=0[0m
+[0;32mI (320) wifi:wifi firmware version: f3dbad7[0m
+[0;32mI (320) wifi:wifi certification version: v7.0[0m
+[0;32mI (320) wifi:config NVS flash: enabled[0m
+[0;32mI (320) wifi:config nano formatting: disabled[0m
+[0;32mI (320) wifi:Init data frame dynamic rx buffer num: 32[0m
+[0;32mI (320) wifi:Init static rx mgmt buffer num: 5[0m
+[0;32mI (320) wifi:Init management short buffer num: 32[0m
+[0;32mI (320) wifi:Init dynamic tx buffer num: 32[0m
+[0;32mI (320) wifi:Init static tx FG buffer num: 2[0m
+[0;32mI (320) wifi:Init static rx buffer size: 1600[0m
+[0;32mI (320) wifi:Init static rx buffer num: 10[0m
+[0;32mI (320) wifi:Init dynamic rx buffer num: 32[0m
+[0;32mI (320) wifi_init: rx ba win: 6[0m
+[0;32mI (320) wifi_init: accept mbox: 6[0m
+[0;32mI (320) wifi_init: tcpip mbox: 32[0m
+[0;32mI (320) wifi_init: udp mbox: 6[0m
+[0;32mI (320) wifi_init: tcp mbox: 6[0m
+[0;32mI (320) wifi_init: tcp tx win: 5760[0m
+[0;32mI (320) wifi_init: tcp rx win: 5760[0m
+[0;32mI (320) wifi_init: tcp mss: 1440[0m
+[0;32mI (320) wifi_init: WiFi IRAM OP enabled[0m
+[0;32mI (320) wifi_init: WiFi RX IRAM OP enabled[0m
+[0;33mW (320) storage: Primary key 'wifi_creds' failed (ESP_ERR_NVS_NOT_FOUND). Trying backup.[0m
+[1;31mE (320) storage: Backup key 'wifi_creds_bak' also failed (ESP_ERR_NVS_NOT_FOUND).[0m
+[0;33mW (320) net: Failed to load Wi-Fi credentials (err=ESP_ERR_NVS_NOT_FOUND), assuming none exist.[0m
+[0;32mI (320) net: No credentials, Wi-Fi not started. Waiting for provisioning.[0m
+[0;32mI (320) net: net_task starting[0m
+[0;32mI (320) net: No Wi-Fi credentials, BLE is active for provisioning.[0m
+[0;32mI (320) net: net initialized[0m
+[0;33mW (330) secure_part: bad magic[0m
+[0;33mW (330) aws_mqtt: esp_secure_cert partition not found or invalid TLV[0m
+[0;32mI (330) aws_mqtt: aws_mqtt initialized (endpoint=example-ats.iot.region.amazonaws.com)[0m
+[1;31mE (330) esp-tls: couldn't get hostname for :example-ats.iot.region.amazonaws.com: getaddrinfo() returns 202, addrinfo=0x0[0m
+[1;31mE (330) esp-tls: Failed to open new connection[0m
+[1;31mE (330) transport_base: Failed to open a new connection[0m
+[1;31mE (330) mqtt_client: Error transport connect[0m
+[0;33mW (330) aws_mqtt: mqtt disconnected[0m
+[0;32mI (330) aws_mqtt: mqtt client started[0m
+[0;32mI (330) telemetry: Telemetry task started[0m
+[0;32mI (330) ota: OTA task started[0m
+[0;32mI (330) ota: OTA component initialized[0m
+[0;32mI (330) app_main: Waiting for time sync...[0m
+[0;32mI (610) ble_nimble: BLE_ACTIVE -> 1[0m
+[1;31mE (610) ble_nimble: adv_set_fields rc=4[0m
+[1;31mE (5260) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:[0m
+[1;31mE (5260) task_wdt:  - schedule_task (CPU 0)[0m
+[1;31mE (5260) task_wdt:  - control_task (CPU 0)[0m
+[1;31mE (5260) task_wdt: Tasks currently running:[0m
+[1;31mE (5260) task_wdt: CPU 0: IDLE[0m
+[1;31mE (5260) task_wdt: Print CPU 0 (current core) registers[0m
+Core  0 register dump:
+MEPC    : 0x403895d6  RA      : 0x403895c6  SP      : 0x3fca6290  GP      : 0x3fc9a200  
+TP      : 0x3fca62f0  T0      : 0x00000000  T1      : 0x00000000  T2      : 0x00000000  
+S0/FP   : 0x00000008  S1      : 0x00000001  A0      : 0x00000000  A1      : 0x3fca627f  
+A2      : 0x00000000  A3      : 0x3fca62fc  A4      : 0x0000001c  A5      : 0x600ce000  
+A6      : 0x00000000  A7      : 0x00000000  S2      : 0x00000000  S3      : 0x00000000  
+S4      : 0x00000000  S5      : 0x00000000  S6      : 0x00000000  S7      : 0x00000000  
+S8      : 0x00000000  S9      : 0x00000000  S10     : 0x00000000  S11     : 0x00000000  
+T3      : 0x00000000  T4      : 0x00000000  T5      : 0x00000000  T6      : 0x00000000  
+MSTATUS : 0x00001889  MTVEC   : 0x40380001  MCAUSE  : 0xdeadc0de  MTVAL   : 0xdeadc0de  
+MHARTID : 0x00000000  
+Please enable CONFIG_ESP_SYSTEM_USE_FRAME_POINTER option to have a full backtrace.

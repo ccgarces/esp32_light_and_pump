@@ -68,6 +68,8 @@ static void on_ble_provisioned(const char *ssid, const char *psk, const char *tz
 
 void app_main(void)
 {
+    esp_log_level_set("*", ESP_LOG_INFO);
+    ESP_LOGI("APP", "=== USB console hello ===");
     ESP_LOGI(TAG, "starting app_main");
 
     // Print MAC early so onboarding tools/users can identify the device even if BLE is inactive
@@ -106,6 +108,12 @@ void app_main(void)
     }
     ESP_LOGI(TAG, "schedule: ON %02d:%02d OFF %02d:%02d TZ=%s", s.on_hour, s.on_min, s.off_hour, s.off_min, s.tz);
 
+    // Register BLE provisioning callback to save credentials and tz
+    ble_register_prov_callback(on_ble_provisioned, NULL);
+    // BLE is started/stopped by the BLE manager based on network state to
+    // minimize attack surface. The ble_init function is responsible for setting this up.
+    if (ble_init() != ESP_OK) ESP_LOGW(TAG, "ble_init failed");
+
     // Net (wifi/sntp)
     if (net_init() != ESP_OK) ESP_LOGW(TAG, "net_init failed");
 
@@ -115,12 +123,6 @@ void app_main(void)
     } else if (aws_mqtt_connect() != ESP_OK) {
         ESP_LOGW(TAG, "aws_mqtt_connect failed");
     }
-
-    // Register BLE provisioning callback to save credentials and tz
-    ble_register_prov_callback(on_ble_provisioned, NULL);
-    // BLE is started/stopped by the BLE manager based on network state to
-    // minimize attack surface. The ble_init function is responsible for setting this up.
-    if (ble_init() != ESP_OK) ESP_LOGW(TAG, "ble_init failed");
 
     // Telemetry
     telemetry_init();

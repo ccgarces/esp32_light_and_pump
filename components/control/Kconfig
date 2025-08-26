@@ -2,11 +2,11 @@ menu "Control component configuration"
 
 config CONTROL_LIGHT_GPIO
     int "LED PWM GPIO (Light)"
-    default 18
+    default 2
 
 config CONTROL_PUMP_GPIO
     int "LED PWM GPIO (Pump)"
-    default 19
+    default 3
 
 config CONTROL_LEDC_TIMER
     int "LEDC timer (0..3)"

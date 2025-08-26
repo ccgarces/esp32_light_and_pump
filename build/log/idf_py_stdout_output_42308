@@ -1,0 +1,180 @@
+Command: C:\Espressif\python_env\idf5.5_py3.12_env\Scripts\python.exe C:\Espressif\frameworks\v5.5\esp-idf\tools/idf_monitor.py -p COM8 -b 115200 --toolchain-prefix riscv32-esp-elf- --target esp32c3 --revision 3 --decode-panic backtrace D:\github\esp32_light_and_pump\build\esp32_light_and_pump.elf D:\github\esp32_light_and_pump\build\bootloader\bootloader.elf --force-color -m 'C:\Espressif\python_env\idf5.5_py3.12_env\Scripts\python.exe' 'C:\Espressif\frameworks\v5.5\esp-idf\tools\idf.py' '-p' 'COM8'
+ESP-ROM:esp32c3-api1-20210207
+Build:Feb  7 2021
+rst:0x15 (USB_UART_CHIP_RESET),boot:0x7 (DOWNLOAD(USB/UART0/1))
+Saved PC:0x400462dc
+waiting for download
+[0;32mI (349) safety: Task WDT enabled by Kconfig (timeout=5s); skipping init[0m
+[0;32mI (349) safety: safety_task starting[0m
+[0;32mI (349) safety: Safety component initialized (WDT timeout: 5s)[0m
+[0;32mI (349) storage: Storage initialized (namespace: app_config)[0m
+[0;32mI (349) control: apply_duty: light=0% pump=0% ramp=0ms[0m
+[0;32mI (349) control: control_task starting[0m
+[0;32mI (349) control: control initialized[0m
+[0;33mW (359) storage: Primary key 'schedule_cfg' failed (ESP_ERR_NVS_NOT_FOUND). Trying backup.[0m
+[1;31mE (359) storage: Backup key 'schedule_cfg_ba' also failed (ESP_ERR_NVS_NOT_FOUND).[0m
+[0;32mI (359) schedule: No schedule found in NVS, using defaults.[0m
+[0;32mI (359) storage: Saved config for key 'schedule_cfg' (80 bytes)[0m
+[0;32mI (359) schedule: Saved schedule: ON 07:00, OFF 21:00, TZ=UTC[0m
+[0;32mI (359) schedule: schedule_task starting[0m
+[0;32mI (359) schedule: Waiting for time sync...[0m
+[0;32mI (359) schedule: schedule initialized[0m
+[0;32mI (359) schedule: Loaded schedule: ON 07:00, OFF 21:00, TZ=UTC[0m
+[0;32mI (359) app_main: applied stored TZ=UTC[0m
+[0;32mI (359) app_main: schedule: ON 07:00 OFF 21:00 TZ=UTC[0m
+[0;32mI (359) ble_nimble: init NimBLE[0m
+[0;32mI (359) ble_nimble: heap free: 8bit=224700, 32bit=224700[0m
+[0;32mI (359) BLE_INIT: BT controller compile version [4713a69][0m
+[0;32mI (359) BLE_INIT: Feature Config, ADV:1, BLE_50:1, DTM:1, SCAN:1, CCA:0, SMP:1, CONNECT:1[0m
+[0;32mI (359) BLE_INIT: Bluetooth MAC: 0c:4e:a0:30:88:36[0m
+[0;32mI (359) phy_init: phy_version 1201,bae5dd99,Mar  3 2025,15:36:21[0m
+[0;33mW (369) phy_init: failed to load RF calibration data (0x1102), falling back to full calibration[0m
+[0;32mI (399) phy_init: Saving new calibration data due to checksum failure or outdated calibration data, mode(2)[0m
+[0;32mI (409) NimBLE: GAP procedure initiated: stop advertising.[0m
+
+[0;32mI (409) NimBLE: Failed to restore IRKs from store; status=8[0m
+
+[0;32mI (409) ble_nimble: BLE addr 0C:4E:A0:30:88:36[0m
+[0;32mI (409) ble_nimble: GATT services registered[0m
+[0;32mI (419) pp: pp rom version: 9387209[0m
+[0;32mI (419) net80211: net80211 rom version: 9387209[0m
+[0;32mI (429) wifi:wifi driver task: 3fcbef60, prio:23, stack:6656, core=0[0m
+[0;32mI (439) wifi:wifi firmware version: f3dbad7[0m
+[0;32mI (439) wifi:wifi certification version: v7.0[0m
+[0;32mI (439) wifi:config NVS flash: enabled[0m
+[0;32mI (439) wifi:config nano formatting: disabled[0m
+[0;32mI (439) wifi:Init data frame dynamic rx buffer num: 32[0m
+[0;32mI (439) wifi:Init static rx mgmt buffer num: 5[0m
+[0;32mI (439) wifi:Init management short buffer num: 32[0m
+[0;32mI (439) wifi:Init dynamic tx buffer num: 32[0m
+[0;32mI (439) wifi:Init static tx FG buffer num: 2[0m
+[0;32mI (439) wifi:Init static rx buffer size: 1600[0m
+[0;32mI (439) wifi:Init static rx buffer num: 10[0m
+[0;32mI (439) wifi:Init dynamic rx buffer num: 32[0m
+[0;32mI (439) wifi_init: rx ba win: 6[0m
+[0;32mI (439) wifi_init: accept mbox: 6[0m
+[0;32mI (439) wifi_init: tcpip mbox: 32[0m
+[0;32mI (439) wifi_init: udp mbox: 6[0m
+[0;32mI (439) wifi_init: tcp mbox: 6[0m
+[0;32mI (439) wifi_init: tcp tx win: 5760[0m
+[0;32mI (439) wifi_init: tcp rx win: 5760[0m
+[0;32mI (439) wifi_init: tcp mss: 1440[0m
+[0;32mI (439) wifi_init: WiFi IRAM OP enabled[0m
+[0;32mI (439) wifi_init: WiFi RX IRAM OP enabled[0m
+[0;33mW (439) storage: Primary key 'wifi_creds' failed (ESP_ERR_NVS_NOT_FOUND). Trying backup.[0m
+[1;31mE (439) storage: Backup key 'wifi_creds_bak' also failed (ESP_ERR_NVS_NOT_FOUND).[0m
+[0;33mW (439) net: Failed to load Wi-Fi credentials (err=ESP_ERR_NVS_NOT_FOUND), assuming none exist.[0m
+[0;32mI (439) net: No credentials, Wi-Fi not started. Waiting for provisioning.[0m
+[0;32mI (439) net: net_task starting[0m
+[0;32mI (439) net: No Wi-Fi credentials, BLE is active for provisioning.[0m
+[0;32mI (439) net: net initialized[0m
+[0;33mW (449) secure_part: bad magic[0m
+[0;33mW (449) aws_mqtt: esp_secure_cert partition not found or invalid TLV[0m
+[0;32mI (449) aws_mqtt: aws_mqtt initialized (endpoint=example-ats.iot.region.amazonaws.com)[0m
+[1;31mE (449) esp-tls: couldn't get hostname for :example-ats.iot.region.amazonaws.com: getaddrinfo() returns 202, addrinfo=0x0[0m
+[1;31mE (449) esp-tls: Failed to open new connection[0m
+[1;31mE (449) transport_base: Failed to open a new connection[0m
+[1;31mE (449) mqtt_client: Error transport connect[0m
+[0;33mW (449) aws_mqtt: mqtt disconnected[0m
+[0;32mI (449) aws_mqtt: mqtt client started[0m
+[0;32mI (449) telemetry: Telemetry task started[0m
+[0;32mI (449) ota: OTA task started[0m
+[0;32mI (449) ota: OTA component initialized[0m
+[0;32mI (449) app_main: Waiting for time sync...[0m
+[0;32mI (709) ble_nimble: BLE_ACTIVE -> 1[0m
+[1;31mE (709) ble_nimble: adv_set_fields rc=4[0m
+[1;31mE (5349) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:[0m
+[1;31mE (5349) task_wdt:  - schedule_task (CPU 0)[0m
+[1;31mE (5349) task_wdt:  - control_task (CPU 0)[0m
+[1;31mE (5349) task_wdt: Tasks currently running:[0m
+[1;31mE (5349) task_wdt: CPU 0: IDLE[0m
+[1;31mE (5349) task_wdt: Print CPU 0 (current core) registers[0m
+Core  0 register dump:
+MEPC    : 0x403895d6  RA      : 0x403895c6  SP      : 0x3fca6290  GP      : 0x3fc9a200  
+TP      : 0x3fca62f0  T0      : 0x00000000  T1      : 0x00000000  T2      : 0x00000000  
+S0/FP   : 0x00000008  S1      : 0x00000001  A0      : 0x00000000  A1      : 0x3fca627f  
+A2      : 0x00000000  A3      : 0x3fca62fc  A4      : 0x0000001c  A5      : 0x600ce000  
+A6      : 0x00000000  A7      : 0x00000000  S2      : 0x00000000  S3      : 0x00000000  
+S4      : 0x00000000  S5      : 0x00000000  S6      : 0x00000000  S7      : 0x00000000  
+S8      : 0x00000000  S9      : 0x00000000  S10     : 0x00000000  S11     : 0x00000000  
+T3      : 0x00000000  T4      : 0x00000000  T5      : 0x00000000  T6      : 0x00000000  
+MSTATUS : 0x00001889  MTVEC   : 0x40380001  MCAUSE  : 0xdeadc0de  MTVAL   : 0xdeadc0de  
+MHARTID : 0x00000000  
+Please enable CONFIG_ESP_SYSTEM_USE_FRAME_POINTER option to have a full backtrace.
+[1;31mE (10349) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:[0m
+[1;31mE (10349) task_wdt:  - schedule_task (CPU 0)[0m
+[1;31mE (10349) task_wdt:  - control_task (CPU 0)[0m
+[1;31mE (10349) task_wdt: Tasks currently running:[0m
+[1;31mE (10349) task_wdt: CPU 0: IDLE[0m
+[1;31mE (10349) task_wdt: Print CPU 0 (current core) registers[0m
+Core  0 register dump:
+MEPC    : 0x403895d6  RA      : 0x403895c6  SP      : 0x3fca6290  GP      : 0x3fc9a200  
+TP      : 0x3fca62f0  T0      : 0x00000000  T1      : 0x00000000  T2      : 0x00000000  
+S0/FP   : 0x00000008  S1      : 0x00000001  A0      : 0x00000000  A1      : 0x3fca627f  
+A2      : 0x00000000  A3      : 0x3fca62fc  A4      : 0x0000001c  A5      : 0x600ce000  
+A6      : 0x00000000  A7      : 0x00000000  S2      : 0x00000000  S3      : 0x00000000  
+S4      : 0x00000000  S5      : 0x00000000  S6      : 0x00000000  S7      : 0x00000000  
+S8      : 0x00000000  S9      : 0x00000000  S10     : 0x00000000  S11     : 0x00000000  
+T3      : 0x00000000  T4      : 0x00000000  T5      : 0x00000000  T6      : 0x00000000  
+MSTATUS : 0x00001889  MTVEC   : 0x40380001  MCAUSE  : 0xdeadc0de  MTVAL   : 0xdeadc0de  
+MHARTID : 0x00000000  
+Please enable CONFIG_ESP_SYSTEM_USE_FRAME_POINTER option to have a full backtrace.
+[1;31mE (15349) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:[0m
+[1;31mE (15349) task_wdt:  - schedule_task (CPU 0)[0m
+[1;31mE (15349) task_wdt:  - control_task (CPU 0)[0m
+[1;31mE (15349) task_wdt: Tasks currently running:[0m
+[1;31mE (15349) task_wdt: CPU 0: IDLE[0m
+[1;31mE (15349) task_wdt: Print CPU 0 (current core) registers[0m
+Core  0 register dump:
+MEPC    : 0x403895d6  RA      : 0x403895c6  SP      : 0x3fca6290  GP      : 0x3fc9a200  
+TP      : 0x3fca62f0  T0      : 0x00000000  T1      : 0x00000000  T2      : 0x00000000  
+S0/FP   : 0x00000008  S1      : 0x00000001  A0      : 0x00000000  A1      : 0x3fca627f  
+A2      : 0x00000000  A3      : 0x3fca62fc  A4      : 0x0000001c  A5      : 0x600ce000  
+A6      : 0x00000000  A7      : 0x00000000  S2      : 0x00000000  S3      : 0x00000000  
+S4      : 0x00000000  S5      : 0x00000000  S6      : 0x00000000  S7      : 0x00000000  
+S8      : 0x00000000  S9      : 0x00000000  S10     : 0x00000000  S11     : 0x00000000  
+T3      : 0x00000000  T4      : 0x00000000  T5      : 0x00000000  T6      : 0x00000000  
+MSTATUS : 0x00001889  MTVEC   : 0x40380001  MCAUSE  : 0xdeadc0de  MTVAL   : 0xdeadc0de  
+MHARTID : 0x00000000  
+Please enable CONFIG_ESP_SYSTEM_USE_FRAME_POINTER option to have a full backtrace.
+[1;31mE (15449) esp-tls: couldn't get hostname for :example-ats.iot.region.amazonaws.com: getaddrinfo() returns 202, addrinfo=0x0[0m
+[1;31mE (15449) esp-tls: Failed to open new connection[0m
+[1;31mE (15449) transport_base: Failed to open a new connection[0m
+[1;31mE (15449) mqtt_client: Error transport connect[0m
+[0;33mW (15449) aws_mqtt: mqtt disconnected[0m
+[1;31mE (20349) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:[0m
+[1;31mE (20349) task_wdt:  - schedule_task (CPU 0)[0m
+[1;31mE (20349) task_wdt:  - control_task (CPU 0)[0m
+[1;31mE (20349) task_wdt: Tasks currently running:[0m
+[1;31mE (20349) task_wdt: CPU 0: IDLE[0m
+[1;31mE (20349) task_wdt: Print CPU 0 (current core) registers[0m
+Core  0 register dump:
+MEPC    : 0x403895d6  RA      : 0x403895c6  SP      : 0x3fca6290  GP      : 0x3fc9a200  
+TP      : 0x3fca62f0  T0      : 0x00000000  T1      : 0x00000000  T2      : 0x00000000  
+S0/FP   : 0x00000008  S1      : 0x00000001  A0      : 0x00000000  A1      : 0x3fca627f  
+A2      : 0x00000000  A3      : 0x3fca62fc  A4      : 0x0000001c  A5      : 0x600ce000  
+A6      : 0x00000000  A7      : 0x00000000  S2      : 0x00000000  S3      : 0x00000000  
+S4      : 0x00000000  S5      : 0x00000000  S6      : 0x00000000  S7      : 0x00000000  
+S8      : 0x00000000  S9      : 0x00000000  S10     : 0x00000000  S11     : 0x00000000  
+T3      : 0x00000000  T4      : 0x00000000  T5      : 0x00000000  T6      : 0x00000000  
+MSTATUS : 0x00001889  MTVEC   : 0x40380001  MCAUSE  : 0xdeadc0de  MTVAL   : 0xdeadc0de  
+MHARTID : 0x00000000  
+Please enable CONFIG_ESP_SYSTEM_USE_FRAME_POINTER option to have a full backtrace.
+[1;31mE (25349) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:[0m
+[1;31mE (25349) task_wdt:  - schedule_task (CPU 0)[0m
+[1;31mE (25349) task_wdt:  - control_task (CPU 0)[0m
+[1;31mE (25349) task_wdt: Tasks currently running:[0m
+[1;31mE (25349) task_wdt: CPU 0: IDLE[0m
+[1;31mE (25349) task_wdt: Print CPU 0 (current core) registers[0m
+Core  0 register dump:
+MEPC    : 0x403895d6  RA      : 0x403895c6  SP      : 0x3fca6290  GP      : 0x3fc9a200  
+TP      : 0x3fca62f0  T0      : 0x00000000  T1      : 0x00000000  T2      : 0x00000000  
+S0/FP   : 0x00000008  S1      : 0x00000001  A0      : 0x00000000  A1      : 0x3fca627f  
+A2      : 0x00000000  A3      : 0x3fca62fc  A4      : 0x0000001c  A5      : 0x600ce000  
+A6      : 0x00000000  A7      : 0x00000000  S2      : 0x00000000  S3      : 0x00000000  
+S4      : 0x00000000  S5      : 0x00000000  S6      : 0x00000000  S7      : 0x00000000  
+S8      : 0x00000000  S9      : 0x00000000  S10     : 0x00000000  S11     : 0x00000000  
+T3      : 0x00000000  T4      : 0x00000000  T5      : 0x00000000  T6      : 0x00000000  
+MSTATUS : 0x00001889  MTVEC   : 0x40380001  MCAUSE  : 0xdeadc0de  MTVAL   : 0xdeadc0de  
+MHARTID : 0x00000000  
+Please enable CONFIG_ESP_SYSTEM_USE_FRAME_POINTER option to have a full backtrace.

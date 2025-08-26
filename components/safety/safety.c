@@ -30,19 +30,17 @@ static void safety_task(void *arg)
 
 esp_err_t safety_init(void)
 {
-    // Initialize the Task Watchdog Timer (IDF v5.x API uses config struct)
+    // Initialize the Task Watchdog Timer unless IDF already does it via Kconfig
+#if CONFIG_ESP_TASK_WDT_INIT
+    ESP_LOGI(TAG, "Task WDT enabled by Kconfig (timeout=%ds); skipping init", CONFIG_ESP_TASK_WDT_TIMEOUT_S);
+#else
     esp_task_wdt_config_t wdt_cfg = {
         .timeout_ms = CONFIG_SAFETY_WDT_TIMEOUT_S * 1000,
         .idle_core_mask = (1 << portNUM_PROCESSORS) - 1,
         .trigger_panic = true,
     };
-    esp_err_t wdt_rc = esp_task_wdt_init(&wdt_cfg);
-    if (wdt_rc == ESP_ERR_INVALID_STATE) {
-        // TWDT already initialized elsewhere (e.g., via Kconfig). Proceed.
-        ESP_LOGW(TAG, "Task WDT already initialized; using existing config");
-    } else {
-        ESP_ERROR_CHECK(wdt_rc);
-    }
+    ESP_ERROR_CHECK(esp_task_wdt_init(&wdt_cfg));
+#endif
 
     // Create the high-priority safety task
     BaseType_t r = xTaskCreate(safety_task, "safety_task", 2048, NULL, 7, NULL);
