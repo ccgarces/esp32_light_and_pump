@@ -11,9 +11,11 @@
 #include "nvs_flash.h"
 #include <stdbool.h>
 #include <sys/time.h>
+#include <time.h>
 #include "storage.h"
 #include "ipc.h"
 #include "sdkconfig.h"
+#include "esp_sntp.h"
 
 static const char *TAG = "net";
 
@@ -33,9 +35,37 @@ static int s_retry_count = 0;
 static void net_task(void *arg);
 static void wifi_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data);
 
-// Time sync: in IDF 5.5, prefer sntp via lwIP helper is optional; mark TIME_SYNCED when Wi-Fi comes up as a stub
-static void mark_time_synced_stub(void) {
+// SNTP time sync
+#ifndef NET_SNTP_SERVER0
+#define NET_SNTP_SERVER0 "pool.ntp.org"
+#endif
+#ifndef NET_SNTP_SERVER1
+#define NET_SNTP_SERVER1 "time.google.com"
+#endif
+static void time_sync_cb(struct timeval *tv)
+{
+    (void)tv;
     xEventGroupSetBits(g_net_state_event_group, NET_BIT_TIME_SYNCED);
+    time_t now = time(NULL);
+    struct tm tm_utc = {0}, tm_loc = {0};
+    char buf_utc[32] = {0}, buf_loc[48] = {0};
+    gmtime_r(&now, &tm_utc);
+    localtime_r(&now, &tm_loc);
+    strftime(buf_utc, sizeof(buf_utc), "%Y-%m-%d %H:%M:%S UTC", &tm_utc);
+    strftime(buf_loc, sizeof(buf_loc), "%Y-%m-%d %H:%M:%S %Z", &tm_loc);
+    ESP_LOGI(TAG, "Time synchronized: %s | Local: %s | epoch=%lld",
+             buf_utc, buf_loc, (long long)now);
+}
+
+static void start_sntp(void)
+{
+    if (esp_sntp_enabled()) return;
+    esp_sntp_setoperatingmode(SNTP_OPMODE_POLL);
+    esp_sntp_set_time_sync_notification_cb(time_sync_cb);
+    esp_sntp_setservername(0, NET_SNTP_SERVER0);
+    esp_sntp_setservername(1, NET_SNTP_SERVER1);
+    esp_sntp_init();
+    ESP_LOGI(TAG, "SNTP started; servers: %s, %s", NET_SNTP_SERVER0, NET_SNTP_SERVER1);
 }
 
 static void wifi_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data)
@@ -57,7 +87,8 @@ static void wifi_event_handler(void* arg, esp_event_base_t event_base, int32_t e
         ESP_LOGI(TAG, "Got IP:" IPSTR, IP2STR(&event->ip_info.ip));
         s_retry_count = 0;
         xEventGroupSetBits(g_net_state_event_group, NET_BIT_WIFI_UP);
-    mark_time_synced_stub();
+    // SNTP will sync time asynchronously now that we have IP
+    if (!esp_sntp_enabled()) start_sntp();
     }
 }
 
@@ -153,6 +184,9 @@ esp_err_t net_init(void)
     ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
 
     load_credentials();
+
+    // Configure SNTP early; it will work once IP is obtained
+    start_sntp();
 
     if (s_have_creds) {
     wifi_config_t wifi_config = { .sta = { {0} } };

@@ -200,7 +200,16 @@ static void schedule_task(void *arg)
         ESP_ERROR_CHECK(esp_task_wdt_reset());
         if (b & NET_BIT_TIME_SYNCED) break;
     }
-    ESP_LOGI(TAG, "Time is synchronized");
+    // Print current UTC and local time after sync
+    time_t now = time(NULL);
+    struct tm tm_utc = {0}, tm_loc = {0};
+    char buf_utc[32] = {0}, buf_loc[48] = {0};
+    gmtime_r(&now, &tm_utc);
+    localtime_r(&now, &tm_loc);
+    strftime(buf_utc, sizeof(buf_utc), "%Y-%m-%d %H:%M:%S UTC", &tm_utc);
+    strftime(buf_loc, sizeof(buf_loc), "%Y-%m-%d %H:%M:%S %Z", &tm_loc);
+    ESP_LOGI(TAG, "Time is synchronized: %s | Local: %s | epoch=%lld",
+             buf_utc, buf_loc, (long long)now);
 
     schedule_t s;
     schedule_load(&s);

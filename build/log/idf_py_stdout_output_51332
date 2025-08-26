@@ -1,0 +1,446 @@
+Command: C:\Espressif\python_env\idf5.5_py3.12_env\Scripts\python.exe C:\Espressif\frameworks\v5.5\esp-idf\tools/idf_monitor.py -p COM8 -b 115200 --toolchain-prefix riscv32-esp-elf- --target esp32c3 --revision 3 --decode-panic backtrace D:\github\esp32_light_and_pump\build\esp32_light_and_pump.elf D:\github\esp32_light_and_pump\build\bootloader\bootloader.elf --force-color -m 'C:\Espressif\python_env\idf5.5_py3.12_env\Scripts\python.exe' 'C:\Espressif\frameworks\v5.5\esp-idf\tools\idf.py' '-p' 'COM8'
+[0;32mI (238) esp_image: segment 4: paddr=0015d7b0 vaddr=4038b504 sizeESP-ROM:esp32c3-api1-20210207[0m
+Build:Feb  7 2021
+rst:0x15 (USB_UART_CHIP_RESET),boot:0xd (SPI_FAST_FLASH_BOOT)
+Saved PC:0x40388568
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fcd5830,len:0x15c0
+load:0x403cbf10,len:0xba4
+load:0x403ce710,len:0x3040
+entry 0x403cbf1a
+[0;32mI (24) boot: ESP-IDF v5.5 2nd stage bootloader[0m
+[0;32mI (24) boot: compile time Aug 26 2025 22:40:34[0m
+[0;32mI (24) boot: chip revision: v0.4[0m
+[0;32mI (25) boot: efuse block revision: v1.3[0m
+[0;32mI (25) boot.esp32c3: SPI Speed      : 80MHz[0m
+[0;32mI (25) boot.esp32c3: SPI Mode       : DIO[0m
+[0;32mI (25) boot.esp32c3: SPI Flash Size : 4MB[0m
+[0;32mI (25) boot: Enabling RNG early entropy source...[0m
+[0;32mI (25) boot: Partition Table:[0m
+[0;32mI (25) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (26) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (26) boot:  1 nvs_keys         NVS keys         01 04 0000f000 00001000[0m
+[0;32mI (26) boot:  2 phy_init         RF data          01 01 00011000 00001000[0m
+[0;32mI (27) boot:  3 otadata          OTA data         01 00 00012000 00002000[0m
+[0;32mI (27) boot:  4 ota_0            OTA app          00 10 00020000 00180000[0m
+[0;32mI (27) boot:  5 ota_1            OTA app          00 11 001a0000 00180000[0m
+[0;32mI (27) boot:  6 esp_secure_cert  Unknown data     01 19 00320000 00004000[0m
+[0;32mI (28) boot:  7 storage          Unknown data     01 81 00324000 0002c000[0m
+[0;32mI (28) boot: End of partition table[0m
+[0;32mI (28) esp_image: segment 0: paddr=00020020 vaddr=3c100020 size=318d0h (202960) map[0m
+[0;32mI (61) esp_image: segment 1: paddr=000518f8 vaddr=3fc98a00 size=03214h ( 12820) load[0m
+[0;32mI (64) esp_image: segment 2: paddr=00054b14 vaddr=40380000 size=0b504h ( 46340) load[0m
+[0;32mI (72) esp_image: segment 3: paddr=00060020 vaddr=42000020 size=fd788h (1038216) map[0m
+[0;32mI (238) esp_image: segment 4: paddr=0015d7b0 vaddr=4038b504 size=0d380h ( 54144) load[0m
+[0;32mI (249) esp_image: segment 5: paddr=0016ab38 vaddr=50000000 size=00020h (    32) load[0m
+[0;32mI (256) boot: Loaded app from partition at offset 0x20000[0m
+[0;32mI (257) boot: Disabling RNG early entropy source...[0m
+[0;32mI (257) cpu_start: Unicore app[0m
+[0;32mI (266) cpu_start: Pro cpu start user code[0m
+[0;32mI (266) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (266) app_init: Application information:[0m
+[0;32mI (266) app_init: Project name:     esp32_light_and_pump[0m
+[0;32mI (266) app_init: App version:      ca0c317-dirty[0m
+[0;32mI (266) app_init: Compile time:     Aug 26 2025 22:39:39[0m
+[0;32mI (266) app_init: ELF file SHA256:  92c6ed5fc...[0m
+[0;32mI (266) app_init: ESP-IDF:          v5.5[0m
+[0;32mI (266) efuse_init: Min chip rev:     v0.3[0m
+[0;32mI (267) efuse_init: Max chip rev:     v1.99 [0m
+[0;32mI (267) efuse_init: Chip rev:         v0.4[0m
+[0;32mI (267) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (267) heap_init: At 3FCA20C0 len 0001DF40 (119 KiB): RAM[0m
+[0;32mI (267) heap_init: At 3FCC0000 len 0001C710 (113 KiB): Retention RAM[0m
+[0;32mI (267) heap_init: At 3FCDC710 len 00002950 (10 KiB): Retention RAM[0m
+[0;32mI (268) heap_init: At 50000020 len 00001FC8 (7 KiB): RTCRAM[0m
+[0;32mI (269) spi_flash: detected chip: generic[0m
+[0;32mI (269) spi_flash: flash io: dio[0m
+[0;32mI (269) sleep_gpio: Configure to isolate all GPIO pins in sleep state[0m
+[0;32mI (269) sleep_gpio: Enable automatic switching of GPIO sleep configuration[0m
+[0;32mI (270) coexist: coex firmware version: 831ec70[0m
+[0;32mI (270) coexist: coexist rom version 9387209[0m
+[0;32mI (271) main_task: Started on CPU0[0m
+[0;32mI (271) main_task: Calling app_main()[0m
+[0;32mI (271) APP: === USB console hello ===[0m
+[0;32mI (271) app_main: starting app_main[0m
+[0;32mI (271) app_main: Device MAC (STA) 0C:4E:A0:30:88:34[0m
+[0;32mI (271) safety: Task WDT enabled by Kconfig (timeout=5s); skipping init[0m
+[0;32mI (271) safety: safety_task starting[0m
+[0;32mI (271) safety: Safety component initialized (WDT timeout: 5s)[0m
+[0;32mI (271) storage: Storage initialized (namespace: app_config)[0m
+[0;32mI (271) control: apply_duty: light=0% pump=0% ramp=0ms[0m
+[0;32mI (281) control: control_task starting[0m
+[0;32mI (281) control: control initialized[0m
+[0;32mI (281) schedule: Loaded schedule: ON 07:00, OFF 21:00, TZ=UTC[0m
+[0;32mI (281) schedule: schedule_task starting[0m
+[0;32mI (281) schedule: Waiting for time sync...[0m
+[0;32mI (281) schedule: schedule initialized[0m
+[0;32mI (281) schedule: Loaded schedule: ON 07:00, OFF 21:00, TZ=UTC[0m
+[0;32mI (281) app_main: applied stored TZ=UTC[0m
+[0;32mI (281) app_main: schedule: ON 07:00 OFF 21:00 TZ=UTC[0m
+[0;32mI (281) ble_nimble: init NimBLE[0m
+[0;32mI (281) ble_nimble: heap free: 8bit=227868, 32bit=227868[0m
+[0;32mI (281) pp: pp rom version: 9387209[0m
+[0;32mI (281) net80211: net80211 rom version: 9387209[0m
+[0;32mI (291) wifi:wifi driver task: 3fcaf6a0, prio:23, stack:6656, core=0[0m
+[0;32mI (291) wifi:wifi firmware version: f3dbad7[0m
+[0;32mI (291) wifi:wifi certification version: v7.0[0m
+[0;32mI (291) wifi:config NVS flash: enabled[0m
+[0;32mI (291) wifi:config nano formatting: disabled[0m
+[0;32mI (291) wifi:Init data frame dynamic rx buffer num: 32[0m
+[0;32mI (291) wifi:Init static rx mgmt buffer num: 5[0m
+[0;32mI (291) wifi:Init management short buffer num: 32[0m
+[0;32mI (291) wifi:Init dynamic tx buffer num: 32[0m
+[0;32mI (291) wifi:Init static tx FG buffer num: 2[0m
+[0;32mI (291) wifi:Init static rx buffer size: 1600[0m
+[0;32mI (291) wifi:Init static rx buffer num: 10[0m
+[0;32mI (291) wifi:Init dynamic rx buffer num: 32[0m
+[0;32mI (291) wifi_init: rx ba win: 6[0m
+[0;32mI (291) wifi_init: accept mbox: 6[0m
+[0;32mI (291) wifi_init: tcpip mbox: 32[0m
+[0;32mI (291) wifi_init: udp mbox: 6[0m
+[0;32mI (291) wifi_init: tcp mbox: 6[0m
+[0;32mI (291) wifi_init: tcp tx win: 5760[0m
+[0;32mI (291) wifi_init: tcp rx win: 5760[0m
+[0;32mI (291) wifi_init: tcp mss: 1440[0m
+[0;32mI (291) wifi_init: WiFi IRAM OP enabled[0m
+[0;32mI (291) wifi_init: WiFi RX IRAM OP enabled[0m
+[0;33mW (291) storage: Primary key 'wifi_creds' failed (ESP_ERR_NVS_NOT_FOUND). Trying backup.[0m
+[1;31mE (291) storage: Backup key 'wifi_creds_bak' also failed (ESP_ERR_NVS_NOT_FOUND).[0m
+[0;33mW (291) net: Failed to load Wi-Fi credentials (err=ESP_ERR_NVS_NOT_FOUND), assuming none exist.[0m
+[0;32mI (291) net: SNTP started; servers: pool.ntp.org, time.google.com[0m
+[0;32mI (291) net: No credentials, Wi-Fi not started. Waiting for provisioning.[0m
+[0;32mI (291) net: net_task starting[0m
+[0;32mI (291) net: No Wi-Fi credentials, BLE is active for provisioning.[0m
+[0;32mI (291) net: net initialized[0m
+[0;33mW (301) secure_part: bad magic[0m
+[0;33mW (301) aws_mqtt: esp_secure_cert partition not found or invalid TLV[0m
+[0;32mI (301) aws_mqtt: aws_mqtt initialized (endpoint=example-ats.iot.region.amazonaws.com)[0m
+[0;32mI (301) telemetry: Telemetry task started[0m
+[0;32mI (301) ota: OTA task started[0m
+[0;32mI (301) ota: OTA component initialized[0m
+[0;32mI (301) app_main: Waiting for Wi‑Fi + time sync to start AWS MQTT...[0m
+[0;32mI (581) ble_nimble: BLE_ACTIVE -> 1[0m
+[0;32mI (581) phy_init: phy_version 1201,bae5dd99,Mar  3 2025,15:36:21[0m
+[0;32mI (611) wifi:mode : sta (0c:4e:a0:30:88:34)[0m
+[0;32mI (611) wifi:enable tsf[0m
+[0;32mI (621) BLE_INIT: BT controller compile version [4713a69][0m
+[0;32mI (621) BLE_INIT: Feature Config, ADV:1, BLE_50:0, DTM:0, SCAN:1, CCA:0, SMP:1, CONNECT:1[0m
+[0;32mI (621) BLE_INIT: Bluetooth MAC: 0c:4e:a0:30:88:36[0m
+[0;32mI (621) protocomm_nimble: BLE Host Task Started[0m
+[0;32mI (631) NimBLE: GAP procedure initiated: stop advertising.[0m
+
+[0;32mI (631) NimBLE: GAP procedure initiated: advertise; [0m
+[0;32mI (631) NimBLE: disc_mode=2[0m
+[0;32mI (631) NimBLE:  adv_channel_map=0 own_addr_type=0 adv_filter_policy=0 adv_itvl_min=256 adv_itvl_max=256[0m
+[0;32mI (631) NimBLE: [0m
+
+[0;32mI (641) wifi_prov_mgr: Provisioning started with service name : PROV_C3_8834 [0m
+[0;32mI (641) ble_nimble: Provisioning started[0m
+[1;31mE (641) wifi_prov_mgr: Failed to create additional endpoint[0m
+[0;33mW (641) ble_nimble: custom endpoint create failed: ESP_FAIL[0m
+[0;33mW (30301) app_main: AWS start skipped (no Wi‑Fi/time). Will rely on later retries if implemented.[0m
+[0;32mI (30301) app_main: Waiting for time sync...[0m
+[0;32mI (58891) protocomm_nimble: mtu update event; conn_handle=1 cid=4 mtu=128[0m
+[0;32mI (60281) ble_nimble: Fallback window opened: BLE commissioning enabled[0m
+[0;33mW (60301) app_main: Time not synced after 30s. Skipping schedule reconcile.[0m
+[0;32mI (60301) app_main: init complete; application running[0m
+[0;33mW (83491) wifi:Password length matches WPA2 standards, authmode threshold changes from OPEN to WPA2[0m
+[0;32mI (83511) ble_nimble: Received Wi-Fi creds for SSID 'heapsort_2G'[0m
+[0;32mI (89441) wifi:new:<1,0>, old:<1,0>, ap:<255,255>, sta:<1,0>, prof:1, snd_ch_cfg:0x0[0m
+[0;32mI (89441) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (90441) wifi:state: auth -> init (0x200)[0m
+[0;32mI (90451) wifi:Coexist: Wi-Fi connect fail, apply reconnect coex policy[0m
+
+[0;32mI (90451) wifi:new:<1,0>, old:<1,0>, ap:<255,255>, sta:<1,0>, prof:1, snd_ch_cfg:0x0[0m
+[0;32mI (90451) net: Wi-Fi disconnected, retrying to connect... (attempt 1/10)[0m
+[1;31mE (90451) wifi_prov_mgr: STA Disconnected[0m
+[1;31mE (90451) wifi_prov_mgr: Disconnect reason : 2[0m
+[1;31mE (90451) wifi:sta is connecting, return error[0m
+[0;32mI (95261) wifi:Coexist: Wi-Fi connect fail, apply reconnect coex policy[0m
+
+[0;32mI (95261) net: Wi-Fi disconnected, retrying to connect... (attempt 2/10)[0m
+[1;31mE (95261) wifi_prov_mgr: STA Disconnected[0m
+[1;31mE (95261) wifi_prov_mgr: Disconnect reason : 205[0m
+[1;31mE (95261) wifi:sta is connecting, return error[0m
+[0;32mI (100071) wifi:new:<1,0>, old:<1,0>, ap:<255,255>, sta:<1,0>, prof:1, snd_ch_cfg:0x0[0m
+[0;32mI (100071) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (100101) wifi:state: auth -> assoc (0x0)[0m
+[0;32mI (100101) wifi:state: assoc -> run (0x10)[0m
+[0;32mI (100121) wifi:<ba-add>idx:0 (ifx:0, 98:48:27:5d:69:ea), tid:0, ssn:0, winSize:64[0m
+[0;32mI (100151) wifi:connected with heapsort_2G, aid = 3, channel 1, BW20, bssid = 98:48:27:5d:69:ea[0m
+[0;32mI (100151) wifi:security: WPA2-PSK, phy: bgn, rssi: -75[0m
+[0;32mI (100171) wifi:pm start, type: 1[0m
+
+[0;32mI (100171) wifi:dp: 1, bi: 102400, li: 3, scale listen interval from 307200 us to 307200 us[0m
+[0;32mI (100171) wifi:set rx beacon pti, rx_bcn_pti: 14, bcn_timeout: 25000, mt_pti: 14, mt_time: 10000[0m
+[0;32mI (100231) wifi:AP's beacon interval = 102400 us, DTIM period = 1[0m
+[0;32mI (101771) esp_netif_handlers: sta ip: 192.168.0.182, mask: 255.255.255.0, gw: 192.168.0.2[0m
+[0;32mI (101771) net: Got IP:192.168.0.182[0m
+[0;32mI (101771) wifi_prov_mgr: STA Got IP[0m
+[0;32mI (101771) ble_nimble: Provisioning successful[0m
+[0;32mI (101771) app_main: BLE provisioning received (tz=)[0m
+[0;32mI (101771) storage: Saved config for key 'wifi_creds' (96 bytes)[0m
+[0;32mI (101771) net: Saved new Wi-Fi credentials for SSID: heapsort_2G. Restarting connection.[0m
+[0;33mW (101771) wifi:Password length matches WPA2 standards, authmode threshold changes from OPEN to WPA2[0m
+[0;32mI (101781) wifi:state: run -> init (0x0)[0m
+[0;32mI (101781) wifi:pm stop, total sleep time: 1104240 us / 1607783 us[0m
+
+[0;32mI (101781) wifi:<ba-del>idx:0, tid:0[0m
+[0;32mI (101781) wifi:new:<1,0>, old:<1,0>, ap:<255,255>, sta:<1,0>, prof:1, snd_ch_cfg:0x0[0m
+[0;32mI (101781) schedule: Loaded schedule: ON 07:00, OFF 21:00, TZ=UTC[0m
+[1;31mE (101781) wifi:sta is connecting, return error[0m
+[0;32mI (101781) net: Wi-Fi disconnected, retrying to connect... (attempt 1/10)[0m
+[0;32mI (101861) wifi:new:<1,0>, old:<1,0>, ap:<255,255>, sta:<1,0>, prof:1, snd_ch_cfg:0x0[0m
+[0;32mI (101861) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (101881) wifi:state: auth -> assoc (0x0)[0m
+[0;32mI (101881) wifi:state: assoc -> run (0x10)[0m
+[0;32mI (101901) wifi:<ba-add>idx:0 (ifx:0, 98:48:27:5d:69:ea), tid:0, ssn:0, winSize:64[0m
+[0;32mI (101931) wifi:connected with heapsort_2G, aid = 3, channel 1, BW20, bssid = 98:48:27:5d:69:ea[0m
+[0;32mI (101931) wifi:security: WPA2-PSK, phy: bgn, rssi: -75[0m
+[0;32mI (101941) wifi:pm start, type: 1[0m
+
+[0;32mI (101941) wifi:set rx beacon pti, rx_bcn_pti: 14, bcn_timeout: 25000, mt_pti: 14, mt_time: 10000[0m
+[0;32mI (101961) wifi:AP's beacon interval = 102400 us, DTIM period = 1[0m
+[0;32mI (102041) ble_nimble: BLE_ACTIVE -> 0[0m
+[0;32mI (102781) NimBLE: GAP procedure initiated: stop advertising.[0m
+
+[0;32mI (102781) NimBLE: GAP procedure initiated: stop advertising.[0m
+
+[0;32mI (102781) NimBLE: GAP procedure initiated: terminate connection; conn_handle=1 hci_reason=19[0m
+
+[1;31mE (102821) protocomm_nimble: Error setting advertisement data; rc = 30[0m
+[0;32mI (102821) wifi_prov_mgr: Provisioning stopped[0m
+[0;32mI (102821) ble_nimble: Provisioning ended[0m
+[0;32mI (103511) esp_netif_handlers: sta ip: 192.168.0.182, mask: 255.255.255.0, gw: 192.168.0.2[0m
+[0;32mI (103511) net: Got IP:192.168.0.182[0m
+[0;32mI (104291) net: Wi-Fi connection established.[0m
+Guru Meditation Error: Core  0 panic'ed (Interrupt wdt timeout on CPU0). 
+
+Core  0 register dump:
+MEPC    : 0x4038856c  RA      : 0x4038855c  SP      : 0x3fca55b0  GP      : 0x3fc99200  
+TP      : 0x3fca5610  T0      : 0x00000000  T1      : 0x00000000  T2      : 0x00000000  
+S0/FP   : 0x00000008  S1      : 0x00000001  A0      : 0x00000000  A1      : 0x3fca559f  
+A2      : 0x00000000  A3      : 0x3fca561c  A4      : 0x0000001c  A5      : 0x600ce000  
+A6      : 0x00000001  A7      : 0x00000000  S2      : 0x00000000  S3      : 0x00000000  
+S4      : 0x00000000  S5      : 0x00000000  S6      : 0x00000000  S7      : 0x00000000  
+S8      : 0x00000000  S9      : 0x00000000  S10     : 0x00000000  S11     : 0x00000000  
+T3      : 0x00000000  T4      : 0x00000000  T5      : 0x00000000  T6      : 0x00000000  
+MSTATUS : 0x00001881  MTVEC   : 0x40380001  MCAUSE  : 0x00000018  MTVAL   : 0x4038856c  
+MHARTID : 0x00000000  
+
+Stack memory:
+3fca55b0: 0x00000000 0x00000000 0x00000000 0x4204889c 0x00000000 0x00000000 0x00000000 0x4038bc7a
+3fca55d0: 0x00000000 0x00000000 0x00000000 0x4038aee4 0x00000000 0x00000000 0x00000000 0x00000000
+3fca55f0: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0xa5a5a5a5 0xa5a5a5a5 0xa5a5a5a5
+3fca5610: 0xa5a5a5a5 0xa5a5a5a5 0x00000150 0x3fca5530 0x00000000 0x3fc9bdd0 0x3fc9bdd0 0x3fca561c
+3fca5630: 0x3fc9bdc8 0x00000019 0x00000000 0x00000000 0x3fca561c 0x00000000 0x00000000 0x3fca5018
+3fca5650: 0x454c4449 0x00000000 0x00000000 0x00000000 0x3fca5610 0x00000000 0x00000000 0x00000000
+3fca5670: 0x00000000 0x00000000 0x3fca2690 0x3fca26f8 0x3fca2760 0x00000000 0x00000000 0x00000001
+3fca5690: 0x00000000 0x00000000 0x00000000 0x42005c50 0x00000000 0x00000000 0x00000000 0x00000000
+3fca56b0: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+3fca56d0: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+3fca56f0: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+3fca5710: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+3fca5730: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+3fca5750: 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000200 0x0000000c
+3fca5770: 0x094a010a 0x00000000 0x3fca57ec 0x00000054 0x00000000 0x3fca5780 0x00000000 0x00000000
+3fca5790: 0x00000000 0x3fca5798 0xffffffff 0x3fca5798 0x3fca5798 0x00000000 0x3fca57ac 0xffffffff
+3fca57b0: 0x3fca57ac 0x3fca57ac 0x00000001 0x00000001 0x00000000 0x0000ffff 0x00000000 0x00000054
+3fca57d0: 0x3fca5778 0x00000010 0x3fc9cc14 0x3fcb61fc 0x00000001 0x00000000 0x0000000c 0x084e0108
+3fca57f0: 0x00000000 0x3fca6ab4 0x00000010 0x00000000 0x3fca561c 0x00000000 0x00000001 0x00000054
+3fca5810: 0x00000000 0x3fca5810 0x00000000 0x00000000 0x00000000 0x3fca5828 0xffffffff 0x3fca5828
+3fca5830: 0x3fca5828 0x00000000 0x3fca583c 0xffffffff 0x3fca583c 0x3fca583c 0x00000001 0x00000001
+3fca5850: 0x00000000 0xff00ffff 0x00000000 0x3fca5854 0x3fca5808 0x00000054 0x00000000 0x3fca5868
+3fca5870: 0x00000000 0x00000000 0x00000000 0x3fca5880 0xffffffff 0x3fca5880 0x3fca5880 0x00000000
+3fca5890: 0x3fca5894 0xffffffff 0x3fca5894 0x3fca5894 0x00000001 0x00000001 0x00000000 0x0000ffff
+3fca58b0: 0x00000000 0x00800000 0x3fca5860 0x0000002c 0x00140000 0x00140000 0x00000000 0x00000000
+3fca58d0: 0x00000000 0x00000012 0x00000000 0x00000000 0x00000000 0x3fca58f0 0x3fc9cbc8 0x0000002c
+3fca58f0: 0x00800000 0x00800000 0x00000000 0x00000000 0x00000000 0x00000012 0x00000000 0x00000000
+3fca5910: 0x00000000 0x00000000 0x3fca58e4 0x0000002c 0x00000001 0x00000001 0x3fca592c 0xffffffff
+3fca5930: 0x3fca8e3c 0x3fca8e3c 0x3fca2000 0x3fca20d4 0x3fca20d4 0x3fca20d4 0x3fca5918 0x00000034
+3fca5950: 0x3fc9a388 0x00000001 0x00000002 0x00009000 0x00006000 0x00001000 0x0073766e 0x00000000
+3fca5970: 0x00000000 0x00000000 0x00000000 0x00000000 0x3fca5988 0x00000034 0x3fc9a388 0x00000001
+3fca5990: 0x00000004 0x0000f000 0x00001000 0x00001000 0x5f73766e 0x7379656b 0x00000000 0x00000000
+
+
+
+ELF file SHA256: 92c6ed5fc
+
+Rebooting...
+ESP-ROM:esp32c3-api1-20210207
+Build:Feb  7 2021
+rst:0xc (RTC_SW_CPU_RST),boot:0xd (SPI_FAST_FLASH_BOOT)
+Saved PC:0x403806ba
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fcd5830,len:0x15c0
+load:0x403cbf10,len:0xba4
+load:0x403ce710,len:0x3040
+entry 0x403cbf1a
+[0;32mI (24) boot: ESP-IDF v5.5 2nd stage bootloader[0m
+[0;32mI (24) boot: compile time Aug 26 2025 22:40:34[0m
+[0;32mI (24) boot: chip revision: v0.4[0m
+[0;32mI (24) boot: efuse block revision: v1.3[0m
+[0;32mI (24) boot.esp32c3: SPI Speed      : 80MHz[0m
+[0;32mI (24) boot.esp32c3: SPI Mode       : DIO[0m
+[0;32mI (24) boot.esp32c3: SPI Flash Size : 4MB[0m
+[0;32mI (25) boot: Enabling RNG early entropy source...[0m
+[0;32mI (25) boot: Partition Table:[0m
+[0;32mI (25) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (25) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (25) boot:  1 nvs_keys         NVS keys         01 04 0000f000 00001000[0m
+[0;32mI (26) boot:  2 phy_init         RF data          01 01 00011000 00001000[0m
+[0;32mI (26) boot:  3 otadata          OTA data         01 00 00012000 00002000[0m
+[0;32mI (27) boot:  4 ota_0            OTA app          00 10 00020000 00180000[0m
+[0;32mI (27) boot:  5 ota_1            OTA app          00 11 001a0000 00180000[0m
+[0;32mI (27) boot:  6 esp_secure_cert  Unknown data     01 19 00320000 00004000[0m
+[0;32mI (28) boot:  7 storage          Unknown data     01 81 00324000 0002c000[0m
+[0;32mI (28) boot: End of partition table[0m
+[0;32mI (28) esp_image: segment 0: paddr=00020020 vaddr=3c100020 size=318d0h (202960) map[0m
+[0;32mI (61) esp_image: segment 1: paddr=000518f8 vaddr=3fc98a00 size=03214h ( 12820) load[0m
+[0;32mI (64) esp_image: segment 2: paddr=00054b14 vaddr=40380000 size=0b504h ( 46340) load[0m
+[0;32mI (72) esp_image: segment 3: paddr=00060020 vaddr=42000020 size=fd788h (1038216) map[0m
+[0;32mI (238) esp_image: segment 4: paddr=0015d7b0 vaddr=4038b504 size=0d380h ( 54144) load[0m
+[0;32mI (248) esp_image: segment 5: paddr=0016ab38 vaddr=50000000 size=00020h (    32) load[0m
+[0;32mI (256) boot: Loaded app from partition at offset 0x20000[0m
+[0;32mI (256) boot: Disabling RNG early entropy source...[0m
+[0;32mI (257) cpu_start: Unicore app[0m
+[0;32mI (265) cpu_start: Pro cpu start user code[0m
+[0;32mI (265) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (266) app_init: Application information:[0m
+[0;32mI (266) app_init: Project name:     esp32_light_and_pump[0m
+[0;32mI (266) app_init: App version:      ca0c317-dirty[0m
+[0;32mI (266) app_init: Compile time:     Aug 26 2025 22:39:39[0m
+[0;32mI (266) app_init: ELF file SHA256:  92c6ed5fc...[0m
+[0;32mI (266) app_init: ESP-IDF:          v5.5[0m
+[0;32mI (266) efuse_init: Min chip rev:     v0.3[0m
+[0;32mI (266) efuse_init: Max chip rev:     v1.99 [0m
+[0;32mI (267) efuse_init: Chip rev:         v0.4[0m
+[0;32mI (267) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (267) heap_init: At 3FCA20C0 len 0001DF40 (119 KiB): RAM[0m
+[0;32mI (267) heap_init: At 3FCC0000 len 0001C710 (113 KiB): Retention RAM[0m
+[0;32mI (267) heap_init: At 3FCDC710 len 00002950 (10 KiB): Retention RAM[0m
+[0;32mI (267) heap_init: At 50000020 len 00001FC8 (7 KiB): RTCRAM[0m
+[0;32mI (268) spi_flash: detected chip: generic[0m
+[0;32mI (269) spi_flash: flash io: dio[0m
+[0;32mI (269) sleep_gpio: Configure to isolate all GPIO pins in sleep state[0m
+[0;32mI (269) sleep_gpio: Enable automatic switching of GPIO sleep configuration[0m
+[0;32mI (270) coexist: coex firmware version: 831ec70[0m
+[0;32mI (270) coexist: coexist rom version 9387209[0m
+[0;32mI (271) main_task: Started on CPU0[0m
+[0;32mI (271) main_task: Calling app_main()[0m
+[0;32mI (271) APP: === USB console hello ===[0m
+[0;32mI (271) app_main: starting app_main[0m
+[0;32mI (271) app_main: Device MAC (STA) 0C:4E:A0:30:88:34[0m
+[0;32mI (271) safety: Task WDT enabled by Kconfig (timeout=5s); skipping init[0m
+[0;32mI (271) safety: safety_task starting[0m
+[0;32mI (271) safety: Safety component initialized (WDT timeout: 5s)[0m
+[0;32mI (281) storage: Storage initialized (namespace: app_config)[0m
+[0;32mI (281) control: apply_duty: light=0% pump=0% ramp=0ms[0m
+[0;32mI (281) control: control_task starting[0m
+[0;32mI (281) control: control initialized[0m
+[0;32mI (281) schedule: Loaded schedule: ON 07:00, OFF 21:00, TZ=UTC[0m
+[0;32mI (281) schedule: schedule_task starting[0m
+[0;32mI (281) schedule: Waiting for time sync...[0m
+[0;32mI (281) schedule: schedule initialized[0m
+[0;32mI (281) schedule: Loaded schedule: ON 07:00, OFF 21:00, TZ=UTC[0m
+[0;32mI (281) app_main: applied stored TZ=UTC[0m
+[0;32mI (281) app_main: schedule: ON 07:00 OFF 21:00 TZ=UTC[0m
+[0;32mI (281) ble_nimble: init NimBLE[0m
+[0;32mI (281) ble_nimble: heap free: 8bit=227604, 32bit=227604[0m
+[0;32mI (281) pp: pp rom version: 9387209[0m
+[0;32mI (281) net80211: net80211 rom version: 9387209[0m
+[0;32mI (291) wifi:wifi driver task: 3fcaf7a8, prio:23, stack:6656, core=0[0m
+[0;32mI (291) wifi:wifi firmware version: f3dbad7[0m
+[0;32mI (291) wifi:wifi certification version: v7.0[0m
+[0;32mI (291) wifi:config NVS flash: enabled[0m
+[0;32mI (291) wifi:config nano formatting: disabled[0m
+[0;32mI (291) wifi:Init data frame dynamic rx buffer num: 32[0m
+[0;32mI (291) wifi:Init static rx mgmt buffer num: 5[0m
+[0;32mI (291) wifi:Init management short buffer num: 32[0m
+[0;32mI (291) wifi:Init dynamic tx buffer num: 32[0m
+[0;32mI (291) wifi:Init static tx FG buffer num: 2[0m
+[0;32mI (291) wifi:Init static rx buffer size: 1600[0m
+[0;32mI (291) wifi:Init static rx buffer num: 10[0m
+[0;32mI (291) wifi:Init dynamic rx buffer num: 32[0m
+[0;32mI (291) wifi_init: rx ba win: 6[0m
+[0;32mI (291) wifi_init: accept mbox: 6[0m
+[0;32mI (291) wifi_init: tcpip mbox: 32[0m
+[0;32mI (291) wifi_init: udp mbox: 6[0m
+[0;32mI (291) wifi_init: tcp mbox: 6[0m
+[0;32mI (291) wifi_init: tcp tx win: 5760[0m
+[0;32mI (291) wifi_init: tcp rx win: 5760[0m
+[0;32mI (291) wifi_init: tcp mss: 1440[0m
+[0;32mI (291) wifi_init: WiFi IRAM OP enabled[0m
+[0;32mI (291) wifi_init: WiFi RX IRAM OP enabled[0m
+[0;32mI (301) net: Loaded Wi-Fi credentials for SSID (redacted)[0m
+[0;32mI (301) net: SNTP started; servers: pool.ntp.org, time.google.com[0m
+[0;33mW (301) wifi:Password length matches WPA2 standards, authmode threshold changes from OPEN to WPA2[0m
+[0;32mI (301) net: Starting Wi-Fi connection to heapsort_2G...[0m
+[0;32mI (301) phy_init: phy_version 1201,bae5dd99,Mar  3 2025,15:36:21[0m
+[0;33mW (358) wifi:Password length matches WPA2 standards, authmode threshold changes from OPEN to WPA2[0m
+[0;32mI (358) net: Starting Wi-Fi connection to heapsort_2G...[0m
+[0;32mI (358) phy_init: phy_version 1201,bae5dd99,Mar  3 2025,15:36:21[0m
+[0;32mI (388) wifi:mode : sta (0c:4e:a0:30:88:34)[0m
+[0;32mI (388) wifi:enable tsf[0m
+[0;32mI (398) net: net_task starting[0m
+[0;32mI (398) net: net initialized[0m
+[0;33mW (398) secure_part: bad magic[0m
+[0;33mW (398) aws_mqtt: esp_secure_cert partition not found or invalid TLV[0m
+[0;32mI (398) aws_mqtt: aws_mqtt initialized (endpoint=example-ats.iot.region.amazonaws.com)[0m
+[0;32mI (398) telemetry: Telemetry task started[0m
+[0;32mI (398) ota: OTA task started[0m
+[0;32mI (398) ota: OTA component initialized[0m
+[0;32mI (398) app_main: Waiting for Wi‑Fi + time sync to start AWS MQTT...[0m
+[0;32mI (498) wifi:new:<1,0>, old:<1,0>, ap:<255,255>, sta:<1,0>, prof:1, snd_ch_cfg:0x0[0m
+[0;32mI (498) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (1498) wifi:state: auth -> init (0x200)[0m
+[0;32mI (1508) wifi:new:<1,0>, old:<1,0>, ap:<255,255>, sta:<1,0>, prof:1, snd_ch_cfg:0x0[0m
+[0;32mI (1508) net: Wi-Fi disconnected, retrying to connect... (attempt 1/10)[0m
+[0;32mI (3918) net: Wi-Fi disconnected, retrying to connect... (attempt 2/10)[0m
+[0;32mI (3918) wifi:new:<1,0>, old:<1,0>, ap:<255,255>, sta:<1,0>, prof:1, snd_ch_cfg:0x0[0m
+[0;32mI (3918) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (3928) wifi:state: auth -> assoc (0x0)[0m
+[0;32mI (3928) wifi:state: assoc -> run (0x10)[0m
+[0;32mI (3948) wifi:<ba-add>idx:0 (ifx:0, 98:48:27:5d:69:ea), tid:0, ssn:0, winSize:64[0m
+[0;32mI (3958) wifi:connected with heapsort_2G, aid = 3, channel 1, BW20, bssid = 98:48:27:5d:69:ea[0m
+[0;32mI (3958) wifi:security: WPA2-PSK, phy: bgn, rssi: -64[0m
+[0;32mI (3968) wifi:pm start, type: 1[0m
+
+[0;32mI (3968) wifi:dp: 1, bi: 102400, li: 3, scale listen interval from 307200 us to 307200 us[0m
+[0;32mI (3968) wifi:set rx beacon pti, rx_bcn_pti: 14, bcn_timeout: 25000, mt_pti: 14, mt_time: 10000[0m
+[0;32mI (3978) wifi:AP's beacon interval = 102400 us, DTIM period = 1[0m
+[0;32mI (6498) esp_netif_handlers: sta ip: 192.168.0.182, mask: 255.255.255.0, gw: 192.168.0.2[0m
+[0;32mI (6498) net: Got IP:192.168.0.182[0m
+[0;32mI (7398) net: Wi-Fi connection established.[0m
+[0;33mW (30398) app_main: AWS start skipped (no Wi‑Fi/time). Will rely on later retries if implemented.[0m
+[0;32mI (30398) app_main: Waiting for time sync...[0m
+[0;32mI (42598) net: Time synchronized: 2025-08-26 12:46:01 UTC | Local: 2025-08-26 12:46:01  | epoch=1756212361[0m
+[0;32mI (42598) schedule: Time is synchronized: 2025-08-26 12:46:01 UTC | Local: 2025-08-26 12:46:01  | epoch=1756212361[0m
+[0;32mI (42598) schedule: Loaded schedule: ON 07:00, OFF 21:00, TZ=UTC[0m
+[0;32mI (42598) schedule: Initial schedule state is ON[0m
+[0;32mI (42598) control: control_task got cmd: actor=2 seq=0 light=100 pump=100 ramp=1000[0m
+[0;32mI (42598) control: apply_duty: light=100% pump=100% ramp=1000ms[0m
+[0;32mI (42598) schedule: Loaded schedule: ON 07:00, OFF 21:00, TZ=UTC[0m
+[0;32mI (42598) schedule: Next event is OFF in 29639 seconds (at 1756242000)[0m
+[0;32mI (42598) app_main: Time synced. Reconciling schedule...[0m
+[0;32mI (42598) schedule: No state change to reconcile.[0m
+[0;32mI (42598) app_main: init complete; application running[0m
+[1;31mE (48318) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:[0m
+[1;31mE (48318) task_wdt:  - schedule_task (CPU 0)[0m
+[1;31mE (48318) task_wdt: Tasks currently running:[0m
+[1;31mE (48318) task_wdt: CPU 0: IDLE[0m
+[1;31mE (48318) task_wdt: Print CPU 0 (current core) registers[0m
+Core  0 register dump:
+MEPC    : 0x4038856c  RA      : 0x4038855c  SP      : 0x3fca55b0  GP      : 0x3fc99200  
+TP      : 0x3fca5610  T0      : 0x00000000  T1      : 0x00000000  T2      : 0x00000000  
+S0/FP   : 0x00000008  S1      : 0x00000001  A0      : 0x00000000  A1      : 0x3fca559f  
+A2      : 0x00000000  A3      : 0x3fca561c  A4      : 0x0000001c  A5      : 0x600ce000  
+A6      : 0x00000001  A7      : 0x00000000  S2      : 0x00000000  S3      : 0x00000000  
+S4      : 0x00000000  S5      : 0x00000000  S6      : 0x00000000  S7      : 0x00000000  
+S8      : 0x00000000  S9      : 0x00000000  S10     : 0x00000000  S11     : 0x00000000  
+T3      : 0x00000000  T4      : 0x00000000  T5      : 0x00000000  T6      : 0x00000000  
+MSTATUS : 0x00001889  MTVEC   : 0x40380001  MCAUSE  : 0xdeadc0de  MTVAL   : 0xdeadc0de  
+MHARTID : 0x00000000  
+Please enable CONFIG_ESP_SYSTEM_USE_FRAME_POINTER option to have a full backtrace.
