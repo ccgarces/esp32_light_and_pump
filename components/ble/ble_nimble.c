@@ -75,6 +75,14 @@
 #include "net.h"
 #include "cJSON.h"
 
+#if CONFIG_BLE_PROV_USE_ESP_PROV
+#include "wifi_provisioning/manager.h"
+#include "wifi_provisioning/scheme_ble.h"
+#include "protocomm.h"
+#include "esp_event.h"
+#include "esp_mac.h"
+#endif
+
 // -------------------- Module settings --------------------
 static const char *TAG = "ble_nimble";
 
@@ -89,8 +97,13 @@ static const char *TAG = "ble_nimble";
 #ifndef NET_BIT_BLE_ACTIVE
 #  define NET_BIT_BLE_ACTIVE (1u << 0)
 #endif
+// Alias WIFI_CONNECTED to WIFI_UP if available in net.h
 #ifndef NET_BIT_WIFI_CONNECTED
-#  define NET_BIT_WIFI_CONNECTED (1u << 1)
+#  ifdef NET_BIT_WIFI_UP
+#    define NET_BIT_WIFI_CONNECTED NET_BIT_WIFI_UP
+#  else
+#    define NET_BIT_WIFI_CONNECTED (1u << 1)
+#  endif
 #endif
 #ifndef NET_BIT_TIME_SYNCED
 #  define NET_BIT_TIME_SYNCED (1u << 2)
@@ -112,32 +125,156 @@ static const char *TAG = "ble_nimble";
 #  define BLE_HAS_TEST_CREDS 0
 #endif
 
+#if !CONFIG_BLE_PROV_USE_ESP_PROV
 // 128-bit UUIDs: Service A000..., Characteristic A001 for provisioning JSON
 static const ble_uuid128_t prov_svc_uuid =
     BLE_UUID128_INIT(0x00,0xA0,0x00,0x00,0x00,0x00,0x10,0x00,0x80,0x00,0x00,0x80,0x5F,0x9B,0x34,0xFB);
 static const ble_uuid128_t prov_chr_uuid =
     BLE_UUID128_INIT(0x01,0xA0,0x00,0x00,0x00,0x00,0x10,0x00,0x80,0x00,0x00,0x80,0x5F,0x9B,0x34,0xFB);
+static const ble_uuid128_t prov_uuid = BLE_UUID128_INIT(
+    0xf0,0xde,0xbc,0x9a,0x78,0x56,0x34,0x12,0x78,0x56,0x34,0x12,0x78,0x56,0x34,0x12);
+#endif
 
 // -------------------- State --------------------
+#if !CONFIG_BLE_PROV_USE_ESP_PROV
 static uint8_t own_addr_type;
+#endif
 static ble_prov_cb_t s_prov_cb = NULL; void *s_prov_arg = NULL;
 static volatile bool s_should_adv = false;
 static volatile bool s_adv_running = false;
 static volatile bool s_svcs_registered = false;   // gate ads until GATT ready
 static volatile bool s_ble_boot_ok = false;       // set after host sync
 static bool s_ble_started = false;                // idempotent guard
+#if !CONFIG_BLE_PROV_USE_ESP_PROV
 static char s_devname[32] = {0};
 static uint8_t s_mac[6] = {0};
+#endif
 static bool s_provisioned_recently = false;
 static TickType_t s_prov_time_ticks = 0;
 
+#if CONFIG_BLE_PROV_USE_ESP_PROV
+static bool s_prov_mgr_started = false;
+static char s_last_ssid[33] = {0};
+static char s_last_psk[65] = {0};
+static char s_last_tz[64] = {0};
+static bool s_custom_ep_registered = false;
+#endif
+
 // Forward decls
+#if !CONFIG_BLE_PROV_USE_ESP_PROV
 static void start_advertising(void);
+#endif
 static void ble_mgr_task(void *param);
 static void ble_commission_orchestrator(void *param);
 static inline void set_adv_flag(bool on) { s_should_adv = on; }
+#if BLE_HAS_TEST_CREDS
 static void ble_inject_provision(const char *ssid, const char *psk, const char *tz);
+#endif
+#if CONFIG_BLE_PROV_USE_ESP_PROV
+static void start_provisioning_mgr(void);
+static void stop_provisioning_mgr(void);
+#endif
 
+#if CONFIG_BLE_PROV_USE_ESP_PROV
+// Provisioning manager helpers
+static esp_err_t custom_data_handler(uint32_t session_id, const uint8_t *inbuf, ssize_t inlen,
+                                     uint8_t **outbuf, ssize_t *outlen, void *priv)
+{
+    (void)session_id; (void)priv;
+    const char *ok = "{\"status\":\"ok\"}";
+    if (outbuf && outlen) { *outbuf = (uint8_t*)strdup(ok); *outlen = strlen(ok); }
+    if (!inbuf || inlen <= 0) return ESP_OK;
+    cJSON *root = cJSON_ParseWithLength((const char*)inbuf, (size_t)inlen);
+    if (!root) return ESP_OK;
+    cJSON *tz = cJSON_GetObjectItemCaseSensitive(root, "tz");
+    if (cJSON_IsString(tz) && tz->valuestring) {
+        strncpy(s_last_tz, tz->valuestring, sizeof(s_last_tz)-1);
+        s_last_tz[sizeof(s_last_tz)-1] = '\0';
+        ESP_LOGI(TAG, "custom-data: tz=%s", s_last_tz);
+    }
+    cJSON_Delete(root);
+    return ESP_OK;
+}
+
+static void prov_event_handler(void *user_data, esp_event_base_t event_base, int32_t event_id, void *event_data)
+{
+    (void)user_data; (void)event_base;
+    switch ((wifi_prov_cb_event_t)event_id) {
+    case WIFI_PROV_START:
+        ESP_LOGI(TAG, "Provisioning started");
+        // Create custom endpoint when provisioning stack is fully started
+        if (wifi_prov_mgr_endpoint_create("custom-data") != ESP_OK) {
+            ESP_LOGW(TAG, "custom endpoint create failed: %s", esp_err_to_name(ESP_FAIL));
+        } else {
+            esp_err_t er = wifi_prov_mgr_endpoint_register("custom-data", custom_data_handler, NULL);
+            if (er != ESP_OK) {
+                ESP_LOGW(TAG, "custom endpoint register failed: %s", esp_err_to_name(er));
+            }
+        }
+        break;
+    case WIFI_PROV_CRED_RECV: {
+        wifi_sta_config_t *cfg = (wifi_sta_config_t *)event_data;
+        strncpy(s_last_ssid, (const char*)cfg->ssid, sizeof(s_last_ssid)-1);
+        s_last_ssid[sizeof(s_last_ssid)-1] = '\0';
+        strncpy(s_last_psk, (const char*)cfg->password, sizeof(s_last_psk)-1);
+        s_last_psk[sizeof(s_last_psk)-1] = '\0';
+        ESP_LOGI(TAG, "Received Wi-Fi creds for SSID '%s'", s_last_ssid);
+        break; }
+    case WIFI_PROV_CRED_FAIL:
+        ESP_LOGW(TAG, "Provisioning failed");
+        break;
+    case WIFI_PROV_CRED_SUCCESS:
+        ESP_LOGI(TAG, "Provisioning successful");
+        if (s_prov_cb) {
+            s_prov_cb(s_last_ssid, (s_last_psk[0]?s_last_psk:NULL), (s_last_tz[0]?s_last_tz:NULL), s_prov_arg);
+        }
+        if (g_net_state_event_group) xEventGroupClearBits(g_net_state_event_group, NET_BIT_BLE_ACTIVE);
+        wifi_prov_mgr_stop_provisioning();
+        break;
+    case WIFI_PROV_END:
+        ESP_LOGI(TAG, "Provisioning ended");
+        wifi_prov_mgr_deinit();
+        s_prov_mgr_started = false;
+        s_custom_ep_registered = false;
+        // Now unregister our event handler
+        esp_err_t _e = esp_event_handler_unregister(WIFI_PROV_EVENT, ESP_EVENT_ANY_ID, &prov_event_handler);
+        if (_e != ESP_OK) {
+            ESP_LOGD(TAG, "event_handler_unregister (END): %s", esp_err_to_name(_e));
+        }
+        break;
+    default: break;
+    }
+}
+
+static void start_provisioning_mgr(void)
+{
+    if (s_prov_mgr_started) return;
+    wifi_prov_mgr_config_t cfg = {
+        .scheme = wifi_prov_scheme_ble,
+        .scheme_event_handler = WIFI_PROV_EVENT_HANDLER_NONE,
+    };
+    ESP_ERROR_CHECK(wifi_prov_mgr_init(cfg));
+    // Register provisioning events on the default event loop (works across IDF versions)
+    ESP_ERROR_CHECK(esp_event_handler_register(WIFI_PROV_EVENT, ESP_EVENT_ANY_ID, &prov_event_handler, NULL));
+
+    uint8_t mac_local[6]; esp_read_mac(mac_local, ESP_MAC_WIFI_STA);
+    char service_name[20];
+    snprintf(service_name, sizeof(service_name), "%s_%02X%02X", CONFIG_BLE_PROV_SERVICE_NAME, mac_local[4], mac_local[5]);
+
+    const char *pop = CONFIG_BLE_PROV_POP;
+    ESP_ERROR_CHECK(wifi_prov_mgr_start_provisioning(WIFI_PROV_SECURITY_1, (const void*)pop, service_name, NULL));
+    s_prov_mgr_started = true;
+}
+
+static void stop_provisioning_mgr(void)
+{
+    if (!s_prov_mgr_started) return;
+    wifi_prov_mgr_stop_provisioning();
+    // Deinit happens on WIFI_PROV_END event
+}
+#endif // CONFIG_BLE_PROV_USE_ESP_PROV
+
+#if !CONFIG_BLE_PROV_USE_ESP_PROV
 // -------------------- GAP events --------------------
 static int gap_event(struct ble_gap_event *event, void *arg) {
     (void)arg;
@@ -160,51 +297,79 @@ static int gap_event(struct ble_gap_event *event, void *arg) {
     return 0;
 }
 
-// -------------------- Advertising --------------------
-static void start_advertising(void) {
-    if (!s_ble_boot_ok) {
-        ESP_LOGW(TAG, "BLE stack not started; skip advertising");
-        return;
-    }
-    if (!s_svcs_registered) {
-        ESP_LOGW(TAG, "GATT not registered yet; deferring advertising");
-        return;
-    }
-
+static int set_adv_and_rsp_fields(const char *short_name,
+                                  const uint8_t *mfg, uint8_t mfg_len)
+{
     int rc;
-    if (s_adv_running) { ble_gap_adv_stop(); s_adv_running = false; }
+    struct ble_hs_adv_fields adv = {0};
+    struct ble_hs_adv_fields rsp = {0};
 
-    struct ble_hs_adv_fields fields; memset(&fields, 0, sizeof(fields));
-    fields.flags = BLE_HS_ADV_F_DISC_GEN | BLE_HS_ADV_F_BREDR_UNSUP;
+    /* --- ADV: keep it tiny and always valid --- */
+    adv.flags = BLE_HS_ADV_F_DISC_GEN | BLE_HS_ADV_F_BREDR_UNSUP;
 
-    const char *name = s_devname[0] ? s_devname : "ESP-C3-PROV";
-#ifdef CONFIG_BT_NIMBLE_SVC_GAP_DEVICE_NAME
-    if (!s_devname[0] && CONFIG_BT_NIMBLE_SVC_GAP_DEVICE_NAME[0]) name = CONFIG_BT_NIMBLE_SVC_GAP_DEVICE_NAME;
-#endif
-    fields.name = (uint8_t*)name; fields.name_len = (uint8_t)strlen(name); fields.name_is_complete = 1;
+    // Option A (recommended): advertise a short name only
+    adv.name = (uint8_t *)short_name;
+    adv.name_len = (uint8_t)strlen(short_name);
+    adv.name_is_complete = 1;
 
-    ble_uuid_any_t svc; memcpy(&svc.u128, &prov_svc_uuid, sizeof(prov_svc_uuid)); svc.u.type = BLE_UUID_TYPE_128;
-    fields.uuids128 = &svc.u128; fields.num_uuids128 = 1; fields.uuids128_is_complete = 1;
+    // No UUIDs in ADV if name isn’t super short; put UUIDs in SCAN RESP instead.
 
-    rc = ble_gap_adv_set_fields(&fields);
-    if (rc) { ESP_LOGE(TAG, "adv_set_fields rc=%d", rc); return; }
+    rc = ble_gap_adv_set_fields(&adv);
+    if (rc) {
+        // Fallback: drop the name entirely if even that failed
+        memset(&adv, 0, sizeof(adv));
+        adv.flags = BLE_HS_ADV_F_DISC_GEN | BLE_HS_ADV_F_BREDR_UNSUP;
+        rc = ble_gap_adv_set_fields(&adv);
+        if (rc) return rc; // still invalid -> bail so caller can log rc
+    }
 
-    // Scan response with manufacturer data (0xFFFF + MAC)
-    struct ble_hs_adv_fields rsp; memset(&rsp, 0, sizeof(rsp));
-    uint8_t mfg[8] = { 0xFF, 0xFF, 0,0,0,0,0,0 }; memcpy(&mfg[2], s_mac, 6);
-    rsp.mfg_data = mfg; rsp.mfg_data_len = sizeof(mfg);
+    /* --- SCAN RESPONSE: keep under 31 bytes (UUID + small mfg) --- */
+    rsp.uuids128 = (ble_uuid128_t *)&prov_uuid;
+    rsp.num_uuids128 = 1;
+    rsp.uuids128_is_complete = 1;
+
+    if (mfg && mfg_len) {
+        rsp.mfg_data = mfg;
+        rsp.mfg_data_len = mfg_len; // keep this modest (<= ~10 bytes)
+    }
+    // Do NOT include a long name here; UUID(16B) + name often exceeds 31B.
+
     rc = ble_gap_adv_rsp_set_fields(&rsp);
-    if (rc) { ESP_LOGW(TAG, "adv_rsp_set_fields rc=%d", rc); }
+    return rc;
+}
 
-    struct ble_gap_adv_params advp = {0};
-    advp.conn_mode = BLE_GAP_CONN_MODE_UND; advp.disc_mode = BLE_GAP_DISC_MODE_GEN;
+// -------------------- Advertising --------------------
+static void start_advertising(void)
+{
+    // Only start if host is up and services are registered
+    if (!s_ble_boot_ok || !s_svcs_registered) {
+        return;
+    }
 
-    rc = ble_gap_adv_start(own_addr_type, NULL, BLE_HS_FOREVER, &advp, gap_event, NULL);
-    if (rc == 0) { s_adv_running = true; ESP_LOGI(TAG, "advertising started (name=%s)", name); }
-    else if (rc == BLE_HS_EALREADY) { s_adv_running = true; }
-    else if (rc == BLE_HS_EBUSY || rc == BLE_HS_EINVAL) { ESP_LOGW(TAG, "adv_start busy/invalid rc=%d", rc); }
-    else if (rc == BLE_HS_EUNKNOWN || rc == BLE_HS_ENOTSYNCED) { ESP_LOGW(TAG, "adv_start not ready rc=%d", rc); }
-    else { ESP_LOGE(TAG, "adv_start rc=%d", rc); }
+    struct ble_gap_adv_params params = {0};
+    params.conn_mode = BLE_GAP_CONN_MODE_UND;        // connectable
+    params.disc_mode = BLE_GAP_DISC_MODE_GEN;        // general discoverable
+    params.itvl_min  = 0x00a0; // 100 ms
+    params.itvl_max  = 0x00f0; // 150 ms
+
+    const char *short_name = "C3-PROV";              // <= 8 chars is a good target
+    uint8_t mfg[6] = {0x4C,0x00, /*Apple example vendor ID? use your own*/
+                      0x01, 0x02, 0x03, 0x04};      // keep small; or omit
+
+    int rc = set_adv_and_rsp_fields(short_name, mfg, sizeof(mfg));
+    if (rc) {
+        ESP_LOGE("BLE_ADV", "adv fields invalid rc=%d", rc);
+        return;
+    }
+
+    rc = ble_gap_adv_start(own_addr_type, NULL, BLE_HS_FOREVER,
+                           &params, gap_event, NULL);
+    if (rc) {
+        ESP_LOGE("BLE_ADV", "adv_start failed rc=%d", rc);
+    } else {
+        ESP_LOGI("BLE_ADV", "Advertising started.");
+        s_adv_running = true;
+    }
 }
 
 // -------------------- Provisioning GATT --------------------
@@ -317,6 +482,7 @@ static void ble_host_task(void *param) {
     nimble_port_freertos_deinit();
     vTaskDelete(NULL);
 }
+#endif // !CONFIG_BLE_PROV_USE_ESP_PROV
 
 // Watches NET_BIT_BLE_ACTIVE and (de)starts advertising accordingly
 static void ble_mgr_task(void *param) {
@@ -329,8 +495,12 @@ static void ble_mgr_task(void *param) {
             if (desired != last_desired) {
                 ESP_LOGI(TAG, "BLE_ACTIVE -> %d", desired);
                 set_adv_flag(desired);
+                #if CONFIG_BLE_PROV_USE_ESP_PROV
+                if (desired) start_provisioning_mgr(); else stop_provisioning_mgr();
+                #else
                 if (!desired && s_adv_running) { ble_gap_adv_stop(); s_adv_running = false; }
                 if (desired && !s_adv_running) { start_advertising(); }
+                #endif
                 last_desired = desired;
             }
         }
@@ -430,6 +600,15 @@ esp_err_t ble_init(void) {
         ESP_ERROR_CHECK(nvs_flash_init());
     }
 
+    #if CONFIG_BLE_PROV_USE_ESP_PROV
+    // Manager: reacts to NET_BIT_BLE_ACTIVE
+    xTaskCreate(ble_mgr_task, "ble_mgr", 3072, NULL, 5, NULL);
+    // Orchestrator: timing windows & stability logic
+    xTaskCreate(ble_commission_orchestrator, "ble_comm", 3072, NULL, 5, NULL);
+    s_ble_started = true;
+    return ESP_OK;
+    #else
+
     int rc = nimble_port_init(); // IDF ≥5: handles controller + HCI
     if (rc != 0) {
         ESP_LOGE(TAG, "nimble_port_init failed: %d", rc);
@@ -461,18 +640,24 @@ esp_err_t ble_init(void) {
 
     s_ble_started = true;
     return ESP_OK;
+    #endif
 }
 
 esp_err_t ble_stop(void) {
     if (!s_ble_started) return ESP_OK;
     set_adv_flag(false);
+#if CONFIG_BLE_PROV_USE_ESP_PROV
+    stop_provisioning_mgr();
+#else
     if (s_adv_running) { ble_gap_adv_stop(); s_adv_running = false; }
+#endif
     return ESP_OK;
 }
 
 void ble_register_prov_callback(ble_prov_cb_t cb, void *arg) { s_prov_cb = cb; s_prov_arg = arg; }
 
 // -------------------- Internal helpers --------------------
+#if BLE_HAS_TEST_CREDS
 static void ble_inject_provision(const char *ssid, const char *psk, const char *tz) {
     if (ssid && s_prov_cb) {
         s_prov_cb(ssid, psk, tz, s_prov_arg);
@@ -487,3 +672,4 @@ static void ble_inject_provision(const char *ssid, const char *psk, const char *
         ESP_LOGW(TAG, "ble_inject_provision: ignored (no ssid or no callback)");
     }
 }
+#endif

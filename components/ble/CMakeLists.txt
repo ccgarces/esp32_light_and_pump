@@ -14,7 +14,7 @@ if(IDF_TARGET STREQUAL "esp32c3")
         idf_component_register(
             SRCS "ble_nimble.c"
             INCLUDE_DIRS "include"
-            REQUIRES log json freertos esp_system bt nvs_flash
+            REQUIRES log json freertos esp_system bt nvs_flash esp_event esp_netif esp_wifi wifi_provisioning
             PRIV_REQUIRES main
             EMBED_TXTFILES ${_EMBED_JSON_FILE}
         )
@@ -24,7 +24,7 @@ if(IDF_TARGET STREQUAL "esp32c3")
         idf_component_register(
             SRCS "ble_nimble.c"
             INCLUDE_DIRS "include"
-            REQUIRES log json freertos esp_system bt nvs_flash
+            REQUIRES log json freertos esp_system bt nvs_flash esp_event esp_netif esp_wifi wifi_provisioning
             PRIV_REQUIRES main
         )
     endif()

@@ -124,7 +124,6 @@ $<TARGET_FILE:idf::http_parser>
 $<TARGET_FILE:idf::esp-tls>
 $<TARGET_FILE:idf::esp_adc>
 $<TARGET_FILE:idf::esp_driver_cam>
-$<TARGET_FILE:idf::esp_eth>
 $<TARGET_FILE:idf::esp_hid>
 $<TARGET_FILE:__idf_bt>
 $<TARGET_FILE:idf::tcp_transport>
@@ -159,6 +158,7 @@ $<TARGET_FILE:__idf_control>
 $<TARGET_FILE:__idf_schedule>
 $<TARGET_FILE:__idf_net>
 $<TARGET_FILE:__idf_ble>
+$<TARGET_FILE:__idf_wifi_provisioning>
 $<TARGET_FILE:__idf_telemetry>
 $<TARGET_FILE:__idf_aws_mqtt>
 $<TARGET_FILE:__idf_mqtt>

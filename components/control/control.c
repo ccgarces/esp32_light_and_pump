@@ -99,8 +99,8 @@ static void control_task(void *arg)
 
     control_cmd_t cmd;
     for (;;) {
-        // Wait for a command from the global queue
-        if (xQueueReceive(g_cmd_queue, &cmd, portMAX_DELAY) == pdPASS) {
+    // Wait for a command from the global queue (bounded wait to feed WDT)
+    if (xQueueReceive(g_cmd_queue, &cmd, pdMS_TO_TICKS(1000)) == pdPASS) {
             ESP_LOGI(TAG, "control_task got cmd: actor=%u seq=%u light=%u pump=%u ramp=%u",
                      cmd.actor, cmd.seq, cmd.light_pct, cmd.pump_pct, cmd.ramp_ms);
 
@@ -113,14 +113,19 @@ static void control_task(void *arg)
             apply_duty_locked(cmd.light_pct, cmd.pump_pct, cmd.ramp_ms);
             xSemaphoreGive(s_ledc_mutex);
 
-            // The ramp is handled by hardware, but for very long ramps,
-            // we might need to periodically reset the WDT.
-            // A simple delay matching the ramp duration is fine here.
+            // The ramp is handled by hardware. For long ramps, chunk sleep and feed WDT.
             if (cmd.ramp_ms > 0) {
-                vTaskDelay(pdMS_TO_TICKS(cmd.ramp_ms));
+                uint32_t remaining = cmd.ramp_ms;
+                const uint32_t chunk_ms = 500; // <= 1s to be safe under 5s WDT
+                while (remaining > 0) {
+                    uint32_t d = remaining > chunk_ms ? chunk_ms : remaining;
+                    vTaskDelay(pdMS_TO_TICKS(d));
+                    remaining -= d;
+                    ESP_ERROR_CHECK(esp_task_wdt_reset());
+                }
             }
         }
-        // Pet the watchdog to indicate task is alive
+        // Pet the watchdog even if no command arrived in this iteration
         ESP_ERROR_CHECK(esp_task_wdt_reset());
     }
 }

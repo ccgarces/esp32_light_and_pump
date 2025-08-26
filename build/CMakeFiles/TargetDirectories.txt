@@ -665,7 +665,6 @@ D:/github/esp32_light_and_pump/build/esp-idf/esp_driver_touch_sens/CMakeFiles/li
 D:/github/esp32_light_and_pump/build/esp-idf/esp_driver_touch_sens/CMakeFiles/install.dir
 D:/github/esp32_light_and_pump/build/esp-idf/esp_driver_touch_sens/CMakeFiles/install/local.dir
 D:/github/esp32_light_and_pump/build/esp-idf/esp_driver_touch_sens/CMakeFiles/install/strip.dir
-D:/github/esp32_light_and_pump/build/esp-idf/esp_eth/CMakeFiles/__idf_esp_eth.dir
 D:/github/esp32_light_and_pump/build/esp-idf/esp_eth/CMakeFiles/edit_cache.dir
 D:/github/esp32_light_and_pump/build/esp-idf/esp_eth/CMakeFiles/rebuild_cache.dir
 D:/github/esp32_light_and_pump/build/esp-idf/esp_eth/CMakeFiles/list_install_components.dir

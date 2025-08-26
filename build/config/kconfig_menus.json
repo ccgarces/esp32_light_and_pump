@@ -10828,10 +10828,7 @@
                                                         "help": "Set this option to set the upper limit for number of periodic sync\nconnections. This should be less than maximum connections allowed by\ncontroller.",
                                                         "id": "BT_NIMBLE_MAX_PERIODIC_SYNCS",
                                                         "name": "BT_NIMBLE_MAX_PERIODIC_SYNCS",
-                                                        "range": [
-                                                            0,
-                                                            8
-                                                        ],
+                                                        "range": null,
                                                         "title": "Maximum number of periodic advertising syncs",
                                                         "type": "int"
                                                     },
@@ -32309,8 +32306,39 @@
                         "id": "BLE_DEVICE_NAME",
                         "name": "BLE_DEVICE_NAME",
                         "range": null,
-                        "title": "BLE device name",
+                        "title": "HortusBLE",
                         "type": "string"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": [],
+                                "depends_on": "BLE_PROV_USE_ESP_PROV",
+                                "help": null,
+                                "id": "BLE_PROV_SERVICE_NAME",
+                                "name": "BLE_PROV_SERVICE_NAME",
+                                "range": null,
+                                "title": "Provisioning service name (SSID for BLE provisioning)",
+                                "type": "string"
+                            },
+                            {
+                                "children": [],
+                                "depends_on": "BLE_PROV_USE_ESP_PROV",
+                                "help": null,
+                                "id": "BLE_PROV_POP",
+                                "name": "BLE_PROV_POP",
+                                "range": null,
+                                "title": "Proof-of-Possession (PoP)",
+                                "type": "string"
+                            }
+                        ],
+                        "depends_on": null,
+                        "help": null,
+                        "id": "BLE_PROV_USE_ESP_PROV",
+                        "name": "BLE_PROV_USE_ESP_PROV",
+                        "range": null,
+                        "title": "Use ESP BLE Provisioning (compatible with Espressif app)",
+                        "type": "bool"
                     },
                     {
                         "children": [],

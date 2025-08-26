@@ -194,7 +194,12 @@ static void schedule_task(void *arg)
 
     // Wait for time to be synchronized before starting the main loop
     ESP_LOGI(TAG, "Waiting for time sync...");
-    xEventGroupWaitBits(g_net_state_event_group, NET_BIT_TIME_SYNCED, pdFALSE, pdTRUE, portMAX_DELAY);
+    while (true) {
+        EventBits_t b = xEventGroupWaitBits(g_net_state_event_group, NET_BIT_TIME_SYNCED,
+                                            pdFALSE, pdTRUE, pdMS_TO_TICKS(1000));
+        ESP_ERROR_CHECK(esp_task_wdt_reset());
+        if (b & NET_BIT_TIME_SYNCED) break;
+    }
     ESP_LOGI(TAG, "Time is synchronized");
 
     schedule_t s;
@@ -234,8 +239,8 @@ static void schedule_task(void *arg)
         ESP_LOGI(TAG, "Next event is %s in %d seconds (at %lld)",
                  is_next_event_on ? "ON" : "OFF", sleep_seconds, next_event_utc);
 
-        // Sleep until the next event, but wake up periodically to reset WDT
-        const int max_sleep_s = 60;
+    // Sleep until the next event, but wake up periodically to reset WDT
+    const int max_sleep_s = 10; // keep short to reliably feed WDT
         int remaining_sleep_s = sleep_seconds;
         while (remaining_sleep_s > 0) {
             int current_sleep_s = (remaining_sleep_s > max_sleep_s) ? max_sleep_s : remaining_sleep_s;

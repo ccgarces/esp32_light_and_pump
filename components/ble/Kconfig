@@ -1,8 +1,22 @@
 menu "BLE component configuration"
 
 config BLE_DEVICE_NAME
-    string "BLE device name"
+    string "HortusBLE"
     default "esp_grow_controller"
+
+config BLE_PROV_USE_ESP_PROV
+    bool "Use ESP BLE Provisioning (compatible with Espressif app)"
+    default y
+
+config BLE_PROV_SERVICE_NAME
+    string "Provisioning service name (SSID for BLE provisioning)"
+    depends on BLE_PROV_USE_ESP_PROV
+    default "PROV_C3"
+
+config BLE_PROV_POP
+    string "Proof-of-Possession (PoP)"
+    depends on BLE_PROV_USE_ESP_PROV
+    default "abcd1234"
 
 config BLE_PROV_SERVICE_UUID
     string "Provisioning service UUID"

@@ -358,15 +358,6 @@ PYTHON:UNINITIALIZED=C:\Espressif\python_env\idf5.5_py3.12_env\Scripts\python.ex
 //No help, variable specified on the command line.
 PYTHON_DEPS_CHECKED:UNINITIALIZED=1
 
-//No help, variable specified on the command line.
-SIM_TZ:UNINITIALIZED=Australia/Sydney
-
-//No help, variable specified on the command line.
-SIM_WIFI_PSK:UNINITIALIZED=Lagwerta@2019
-
-//No help, variable specified on the command line.
-SIM_WIFI_SSID:UNINITIALIZED=heapsort_2G
-
 //Allow unsafe builds. These builds ARE NOT SECURE.
 UNSAFE_BUILD:BOOL=OFF
 

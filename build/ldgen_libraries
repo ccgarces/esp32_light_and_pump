@@ -124,7 +124,6 @@ D:/github/esp32_light_and_pump/build/esp-idf/http_parser/libhttp_parser.a
 D:/github/esp32_light_and_pump/build/esp-idf/esp-tls/libesp-tls.a
 D:/github/esp32_light_and_pump/build/esp-idf/esp_adc/libesp_adc.a
 D:/github/esp32_light_and_pump/build/esp-idf/esp_driver_cam/libesp_driver_cam.a
-D:/github/esp32_light_and_pump/build/esp-idf/esp_eth/libesp_eth.a
 D:/github/esp32_light_and_pump/build/esp-idf/esp_hid/libesp_hid.a
 D:/github/esp32_light_and_pump/build/esp-idf/bt/libbt.a
 D:/github/esp32_light_and_pump/build/esp-idf/tcp_transport/libtcp_transport.a
@@ -159,6 +158,7 @@ D:/github/esp32_light_and_pump/build/esp-idf/control/libcontrol.a
 D:/github/esp32_light_and_pump/build/esp-idf/schedule/libschedule.a
 D:/github/esp32_light_and_pump/build/esp-idf/net/libnet.a
 D:/github/esp32_light_and_pump/build/esp-idf/ble/libble.a
+D:/github/esp32_light_and_pump/build/esp-idf/wifi_provisioning/libwifi_provisioning.a
 D:/github/esp32_light_and_pump/build/esp-idf/telemetry/libtelemetry.a
 D:/github/esp32_light_and_pump/build/esp-idf/aws_mqtt/libaws_mqtt.a
 D:/github/esp32_light_and_pump/build/esp-idf/mqtt/libmqtt.a

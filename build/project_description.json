@@ -1,7 +1,7 @@
 {
     "version":            "1.2",
     "project_name":       "esp32_light_and_pump",
-    "project_version":    "2d2b5d8-dirty",
+    "project_version":    "ce10a4a-dirty",
     "project_path":       "D:/github/esp32_light_and_pump",
     "idf_path":           "C:/Espressif/frameworks/v5.5/esp-idf",
     "build_dir":          "D:/github/esp32_light_and_pump/build",
@@ -80,7 +80,7 @@
             "dir": "D:/github/esp32_light_and_pump/components/ble",
             "type": "LIBRARY",
             "lib": "__idf_ble",
-            "reqs": [ "log", "json", "freertos", "esp_system", "bt", "nvs_flash" ],
+            "reqs": [ "log", "json", "freertos", "esp_system", "bt", "nvs_flash", "esp_event", "esp_netif", "esp_wifi", "wifi_provisioning" ],
             "priv_reqs": [ "main" ],
             "managed_reqs": [],
             "managed_priv_reqs": [],
@@ -723,15 +723,15 @@
             "target": "___idf_esp_eth",
             "prefix": "idf",
             "dir": "C:/Espressif/frameworks/v5.5/esp-idf/components/esp_eth",
-            "type": "LIBRARY",
+            "type": "CONFIG_ONLY",
             "lib": "__idf_esp_eth",
             "reqs": [ "esp_event" ],
             "priv_reqs": [ "log", "esp_timer", "esp_driver_spi", "esp_driver_gpio" ],
             "managed_reqs": [],
             "managed_priv_reqs": [],
-            "file": "D:/github/esp32_light_and_pump/build/esp-idf/esp_eth/libesp_eth.a",
-            "sources": [ "C:/Espressif/frameworks/v5.5/esp-idf/components/esp_eth/src/esp_eth.c", "C:/Espressif/frameworks/v5.5/esp-idf/components/esp_eth/src/phy/esp_eth_phy_802_3.c", "C:/Espressif/frameworks/v5.5/esp-idf/components/esp_eth/src/esp_eth_netif_glue.c" ],
-            "include_dirs": [ "include" ]
+            "file": "",
+            "sources": [],
+            "include_dirs": []
         },
         "esp_event": {
             "alias": "idf::esp_event",
@@ -2284,7 +2284,7 @@
             "priv_reqs": [ "log", "esp_timer", "esp_driver_spi", "esp_driver_gpio" ],
             "managed_reqs": [],
             "managed_priv_reqs": [],
-            "include_dirs": [ "include" ]
+            "include_dirs": []
         },
         "esp_event": {
             "alias": "idf::esp_event",
@@ -3096,7 +3096,7 @@
             "prefix": "idf",
             "dir": "D:/github/esp32_light_and_pump/components/ble",
             "lib": "__idf_ble",
-            "reqs": [ "log", "json", "freertos", "esp_system", "bt", "nvs_flash" ],
+            "reqs": [ "log", "json", "freertos", "esp_system", "bt", "nvs_flash", "esp_event", "esp_netif", "esp_wifi", "wifi_provisioning" ],
             "priv_reqs": [ "main" ],
             "managed_reqs": [],
             "managed_priv_reqs": [],

@@ -117,11 +117,9 @@ void app_main(void)
     // Net (wifi/sntp)
     if (net_init() != ESP_OK) ESP_LOGW(TAG, "net_init failed");
 
-    // AWS MQTT (init and connect)
+    // AWS MQTT: defer connect until Wi‑Fi is up and time is synced
     if (aws_mqtt_init() != ESP_OK) {
         ESP_LOGW(TAG, "aws_mqtt_init failed");
-    } else if (aws_mqtt_connect() != ESP_OK) {
-        ESP_LOGW(TAG, "aws_mqtt_connect failed");
     }
 
     // Telemetry
@@ -132,8 +130,17 @@ void app_main(void)
 
     // Optionally reconcile missed schedule events since last boot; for demo we use boot time-60s as last seen
     // Wait for time to be synced before reconciling schedule
+    ESP_LOGI(TAG, "Waiting for Wi‑Fi + time sync to start AWS MQTT...");
+    EventBits_t bits = xEventGroupWaitBits(g_net_state_event_group, NET_BIT_WIFI_UP | NET_BIT_TIME_SYNCED, pdFALSE, pdTRUE, pdMS_TO_TICKS(30000));
+    if ((bits & (NET_BIT_WIFI_UP | NET_BIT_TIME_SYNCED)) == (NET_BIT_WIFI_UP | NET_BIT_TIME_SYNCED)) {
+        if (aws_mqtt_connect() != ESP_OK) {
+            ESP_LOGW(TAG, "aws_mqtt_connect failed");
+        }
+    } else {
+        ESP_LOGW(TAG, "AWS start skipped (no Wi‑Fi/time). Will rely on later retries if implemented.");
+    }
     ESP_LOGI(TAG, "Waiting for time sync...");
-    EventBits_t bits = xEventGroupWaitBits(g_net_state_event_group, NET_BIT_TIME_SYNCED, pdFALSE, pdTRUE, pdMS_TO_TICKS(30000));
+    bits = xEventGroupWaitBits(g_net_state_event_group, NET_BIT_TIME_SYNCED, pdFALSE, pdTRUE, pdMS_TO_TICKS(30000));
     if (bits & NET_BIT_TIME_SYNCED) {
         time_t now_utc = time(NULL);
         // A more robust implementation would store the last shutdown time in NVS
