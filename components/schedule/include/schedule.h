@@ -9,9 +9,9 @@
 
 typedef struct {
     int on_hour;   // 0-23 local
-    int on_min;    // 0-59
+    int pump_on_interval_min;    // 5-3600
     int off_hour;  // 0-23 local
-    int off_min;   // 0-59
+    int pump_on_duration_min;   // 1-3600
     char tz[64];   // IANA timezone string, e.g., "America/Los_Angeles"
 } schedule_t;
 

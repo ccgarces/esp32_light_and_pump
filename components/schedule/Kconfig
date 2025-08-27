@@ -8,6 +8,34 @@ config SCHEDULE_DEFAULT_OFF_HOUR
     int "Default OFF hour (local time)"
     default 21
 
+config SCHEDULE_LIGHT_ON_PCT
+    int "Light duty when ON (%)"
+    default 70
+    range 0 100
+    help
+        When the current time is within the ON window, the light will be set to this duty cycle.
+
+config SCHEDULE_PUMP_ON_PCT
+    int "Pump duty when ON (%)"
+    default 70
+    range 0 100
+    help
+        When the pump cycle is ON, the pump will be set to this duty cycle.
+
+config SCHEDULE_PUMP_ON_DURATION_MIN
+    int "Pump ON duration (minutes)"
+    default 5
+    range 1 1440
+    help
+        Number of minutes to keep the pump ON each cycle after time sync.
+
+config SCHEDULE_PUMP_ON_INTERVAL_MIN
+    int "Pump ON interval (minutes)"
+    default 30
+    range 1 1440
+    help
+        Period between the start of successive pump ON cycles. Must be >= duration.
+
 config SCHEDULE_DEFAULT_TZ
     string "Default IANA Timezone"
     default "UTC"

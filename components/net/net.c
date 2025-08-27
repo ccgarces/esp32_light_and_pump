@@ -16,6 +16,7 @@
 #include "ipc.h"
 #include "sdkconfig.h"
 #include "esp_sntp.h"
+#include "aws_mqtt.h"
 
 static const char *TAG = "net";
 
@@ -118,6 +119,7 @@ static void net_task(void *arg)
     TickType_t wifi_up_timestamp = 0;
     TickType_t wifi_down_timestamp = 0;
     bool was_wifi_up = false;
+    bool mqtt_started = false;
 
     // Initially, BLE is active for provisioning if we don't have credentials
     if (!s_have_creds) {
@@ -128,8 +130,9 @@ static void net_task(void *arg)
 
     for (;;) {
         ESP_ERROR_CHECK(esp_task_wdt_reset());
-        EventBits_t bits = xEventGroupGetBits(g_net_state_event_group);
+    EventBits_t bits = xEventGroupGetBits(g_net_state_event_group);
         bool is_wifi_up = (bits & NET_BIT_WIFI_UP);
+    bool is_time_synced = (bits & NET_BIT_TIME_SYNCED);
 
         if (is_wifi_up && !was_wifi_up) {
             // Wi-Fi just came up
@@ -161,6 +164,17 @@ static void net_task(void *arg)
                     ESP_LOGI(TAG, "Wi-Fi stable for >%dmin, deactivating BLE.", CONFIG_NET_WIFI_STABLE_MIN);
                     xEventGroupClearBits(g_net_state_event_group, NET_BIT_BLE_ACTIVE);
                 }
+            }
+        }
+
+        // Start AWS MQTT when Wi-Fi and time are ready; non-blocking and parallel to scheduling
+        if (!mqtt_started && is_wifi_up && is_time_synced) {
+            esp_err_t r = aws_mqtt_connect();
+            if (r == ESP_OK) {
+                mqtt_started = true;
+                ESP_LOGI(TAG, "AWS MQTT connect initiated (parallel to scheduler)");
+            } else {
+                ESP_LOGW(TAG, "aws_mqtt_connect failed: %s; will retry in 1s", esp_err_to_name(r));
             }
         }
 

@@ -10,6 +10,7 @@
 #include "nvs.h"
 #include "sdkconfig.h"
 #include "ipc.h"
+#include "control.h"
 
 static const char *TAG = "schedule";
 
@@ -30,7 +31,7 @@ esp_err_t schedule_init(void)
         tzset();
     }
 
-    BaseType_t r = xTaskCreate(schedule_task, "schedule_task", 4096, NULL, 4, NULL);
+    BaseType_t r = xTaskCreate(schedule_task, "schedule_task", 4096, NULL, 5, NULL);
     if (r != pdPASS) {
         ESP_LOGE(TAG, "Failed to create schedule_task");
         return ESP_FAIL;
@@ -175,11 +176,17 @@ esp_err_t schedule_reconcile(time_t last_seen_utc, time_t now_utc, const schedul
 
 static void send_control_cmd(bool is_on)
 {
+    // Preserve current pump setting; only change light according to schedule
+    control_state_t st = {0};
+    uint8_t pump_pct = 0;
+    if (control_get_state(&st) == ESP_OK) {
+        pump_pct = st.pump_pct;
+    }
     control_cmd_t cmd = {
         .actor = ACTOR_SCHEDULE,
         .ts = time(NULL),
-        .light_pct = is_on ? 100 : 0,
-        .pump_pct = is_on ? 100 : 0,
+        .light_pct = is_on ? CONFIG_SCHEDULE_LIGHT_ON_PCT : 0,
+        .pump_pct = pump_pct,
         .ramp_ms = 1000,
     };
     if (xQueueSend(g_cmd_queue, &cmd, 0) != pdPASS) {
@@ -214,10 +221,22 @@ static void schedule_task(void *arg)
     schedule_t s;
     schedule_load(&s);
 
-    // Set initial state based on reconciliation
-    bool initial_state = is_currently_on(time(NULL), &s);
-    ESP_LOGI(TAG, "Initial schedule state is %s", initial_state ? "ON" : "OFF");
-    send_control_cmd(initial_state);
+    // Set initial state and remember it
+    bool last_on = is_currently_on(time(NULL), &s);
+    ESP_LOGI(TAG, "Initial schedule state is %s", last_on ? "ON" : "OFF");
+    send_control_cmd(last_on);
+
+    // Initialize pump cycle state
+    uint32_t pump_on_pct = CONFIG_SCHEDULE_PUMP_ON_PCT;
+    int pump_duration_min = CONFIG_SCHEDULE_PUMP_ON_DURATION_MIN;
+    int pump_interval_min = CONFIG_SCHEDULE_PUMP_ON_INTERVAL_MIN;
+    if (pump_interval_min < pump_duration_min) {
+        ESP_LOGW(TAG, "Pump interval (%d) < duration (%d); clamping interval=duration", pump_interval_min, pump_duration_min);
+        pump_interval_min = pump_duration_min;
+    }
+    time_t start_epoch = time(NULL); // anchor for cycles
+    // Align to the next minute boundary for consistent cadence
+    start_epoch = start_epoch - (start_epoch % 60);
 
     for (;;) {
         ESP_ERROR_CHECK(esp_task_wdt_reset());
@@ -226,44 +245,56 @@ static void schedule_task(void *arg)
         schedule_load(&s);
 
         time_t now_utc = time(NULL);
-        time_t next_on_utc, next_off_utc;
-        schedule_compute_next_events(now_utc, &s, &next_on_utc, &next_off_utc);
-
-        time_t next_event_utc;
-        bool is_next_event_on;
-
-        if (next_on_utc < next_off_utc) {
-            next_event_utc = next_on_utc;
-            is_next_event_on = true;
+        bool should_be_on = is_currently_on(now_utc, &s);
+        if (should_be_on != last_on) {
+            ESP_LOGI(TAG, "Minute check: state changed -> %s", should_be_on ? "ON" : "OFF");
+            send_control_cmd(should_be_on);
+            last_on = should_be_on;
         } else {
-            next_event_utc = next_off_utc;
-            is_next_event_on = false;
+            ESP_LOGD(TAG, "Minute check: no change (%s)", should_be_on ? "ON" : "OFF");
         }
 
-        int32_t sleep_seconds = next_event_utc - now_utc;
-        if (sleep_seconds <= 0) {
-            sleep_seconds = 1; // Should not happen, but as a safeguard
+        // Pump cycle: ON for duration then OFF, with interval
+        // Compute minutes since anchor
+        int minutes_since_anchor = (int)((now_utc - start_epoch) / 60);
+        int minutes_into_cycle = minutes_since_anchor % pump_interval_min;
+        bool pump_should_be_on = minutes_into_cycle < pump_duration_min;
+        // Apply pump state without altering intended light schedule state
+        uint8_t desired_light = last_on ? CONFIG_SCHEDULE_LIGHT_ON_PCT : 0;
+        uint8_t desired_pump = pump_should_be_on ? pump_on_pct : 0;
+        // Send only if a change is needed vs. last commanded state (approximate)
+        static uint8_t last_cmd_light = 0, last_cmd_pump = 0;
+        if (desired_light != last_cmd_light || desired_pump != last_cmd_pump) {
+            control_cmd_t pump_cmd = {
+                .actor = ACTOR_SCHEDULE,
+                .ts = now_utc,
+                .seq = 0,
+                .light_pct = desired_light,
+                .pump_pct = desired_pump,
+                .ramp_ms = 500,
+            };
+            if (xQueueSend(g_cmd_queue, &pump_cmd, 0) != pdPASS) {
+                ESP_LOGW(TAG, "Failed to send pump control command");
+            } else {
+                last_cmd_light = desired_light;
+                last_cmd_pump = desired_pump;
+                ESP_LOGI(TAG, "Pump %s (%u%%) [cycle %d/%d min]",
+                         pump_should_be_on ? "ON" : "OFF", desired_pump,
+                         minutes_into_cycle + 1, pump_interval_min);
+            }
         }
 
-        ESP_LOGI(TAG, "Next event is %s in %d seconds (at %lld)",
-                 is_next_event_on ? "ON" : "OFF", sleep_seconds, next_event_utc);
-
-    // Sleep until the next event, but wake up periodically to reset WDT
-    const int max_sleep_s = 10; // keep short to reliably feed WDT
-        int remaining_sleep_s = sleep_seconds;
-        while (remaining_sleep_s > 0) {
-            int current_sleep_s = (remaining_sleep_s > max_sleep_s) ? max_sleep_s : remaining_sleep_s;
-            vTaskDelay(pdMS_TO_TICKS(current_sleep_s * 1000));
-            remaining_sleep_s -= current_sleep_s;
+        // Sleep until next minute boundary, feeding WDT in chunks
+    int sec_into_min = (int)(now_utc % 60);
+        int sleep_s = 60 - sec_into_min;
+        if (sleep_s <= 0) sleep_s = 60;
+    // Feed WDT more frequently than its timeout (typically 5s)
+    const int chunk = 1;
+        while (sleep_s > 0) {
+            int d = (sleep_s > chunk) ? chunk : sleep_s;
+            vTaskDelay(pdMS_TO_TICKS(d * 1000));
+            sleep_s -= d;
             ESP_ERROR_CHECK(esp_task_wdt_reset());
         }
-
-
-        // Time for the event
-        ESP_LOGI(TAG, "Event time: turning %s", is_next_event_on ? "ON" : "OFF");
-        send_control_cmd(is_next_event_on);
-
-        // Small delay to allow the command to be processed before we loop again
-        vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }

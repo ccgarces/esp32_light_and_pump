@@ -32561,6 +32561,58 @@
                     {
                         "children": [],
                         "depends_on": null,
+                        "help": "When the current time is within the ON window, the light will be set to this duty cycle.",
+                        "id": "SCHEDULE_LIGHT_ON_PCT",
+                        "name": "SCHEDULE_LIGHT_ON_PCT",
+                        "range": [
+                            0,
+                            100
+                        ],
+                        "title": "Light duty when ON (%)",
+                        "type": "int"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": null,
+                        "help": "When the pump cycle is ON, the pump will be set to this duty cycle.",
+                        "id": "SCHEDULE_PUMP_ON_PCT",
+                        "name": "SCHEDULE_PUMP_ON_PCT",
+                        "range": [
+                            0,
+                            100
+                        ],
+                        "title": "Pump duty when ON (%)",
+                        "type": "int"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": null,
+                        "help": "Number of minutes to keep the pump ON each cycle after time sync.",
+                        "id": "SCHEDULE_PUMP_ON_DURATION_MIN",
+                        "name": "SCHEDULE_PUMP_ON_DURATION_MIN",
+                        "range": [
+                            1,
+                            1440
+                        ],
+                        "title": "Pump ON duration (minutes)",
+                        "type": "int"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": null,
+                        "help": "Period between the start of successive pump ON cycles. Must be >= duration.",
+                        "id": "SCHEDULE_PUMP_ON_INTERVAL_MIN",
+                        "name": "SCHEDULE_PUMP_ON_INTERVAL_MIN",
+                        "range": [
+                            1,
+                            1440
+                        ],
+                        "title": "Pump ON interval (minutes)",
+                        "type": "int"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": null,
                         "help": "Default timezone to use until one is provisioned.\nSee https://en.wikipedia.org/wiki/List_of_tz_database_time_zones",
                         "id": "SCHEDULE_DEFAULT_TZ",
                         "name": "SCHEDULE_DEFAULT_TZ",

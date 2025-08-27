@@ -27,12 +27,16 @@ EventGroupHandle_t g_net_state_event_group = NULL;
 // Reconcile callback to apply schedule state
 static void apply_schedule_cb(bool on, time_t ts, void *arg)
 {
+    // Preserve pump, only set light according to schedule default
+    control_state_t st = {0};
+    uint8_t pump_pct = 0;
+    if (control_get_state(&st) == ESP_OK) pump_pct = st.pump_pct;
     control_cmd_t cmd = {
         .actor = ACTOR_SCHEDULE,
         .ts = ts,
         .seq = 0,
-        .light_pct = on ? 100 : 0,
-        .pump_pct = on ? 100 : 0,
+        .light_pct = on ? CONFIG_SCHEDULE_LIGHT_ON_PCT : 0,
+        .pump_pct = pump_pct,
         .ramp_ms = 500,
     };
     xQueueSend(g_cmd_queue, &cmd, 0);
